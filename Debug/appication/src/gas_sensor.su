@@ -1,0 +1,6 @@
+../appication/src/gas_sensor.c:8:6:InitMQ137Sensor	16	static
+../appication/src/gas_sensor.c:42:6:InitMQ135Sensor	16	static
+../appication/src/gas_sensor.c:73:6:ProcessGasSensor	24	static
+../appication/src/gas_sensor.c:112:9:ValidateGasSensor	16	static
+../appication/src/gas_sensor.c:135:6:UpdateAlarmLevel	16	static
+../appication/src/gas_sensor.c:141:6:PrintSensorDetails	80	static

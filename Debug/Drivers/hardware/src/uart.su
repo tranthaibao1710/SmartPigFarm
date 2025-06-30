@@ -1,0 +1,10 @@
+../Drivers/hardware/src/uart.c:9:6:USARTx_Init	56	static
+../Drivers/hardware/src/uart.c:61:6:USARTtoBUFF	16	static
+../Drivers/hardware/src/uart.c:69:6:USARTx_GetC	24	static
+../Drivers/hardware/src/uart.c:84:10:USARTx_isEMPTY	24	static
+../Drivers/hardware/src/uart.c:93:10:USARTx_GetS	32	static
+../Drivers/hardware/src/uart.c:126:6:USART_PutC	16	static
+../Drivers/hardware/src/uart.c:130:6:USART_PutS	16	static
+../Drivers/hardware/src/uart.c:135:6:USART1_IRQHandler	16	static
+../Drivers/hardware/src/uart.c:143:6:USART2_IRQHandler	16	static
+../Drivers/hardware/src/uart.c:151:6:USART3_IRQHandler	16	static

@@ -1,0 +1,13 @@
+../appication/src/sensor_system.c:17:6:InitSensorSystem	32	static
+../appication/src/sensor_system.c:62:6:ProcessAllSensors	16	static
+../appication/src/sensor_system.c:88:6:DisplaySystemStatus	48	static
+../appication/src/sensor_system.c:116:6:TestSensorSystem	32	static
+../appication/src/sensor_system.c:139:6:CalibrateSensors	56	static
+../appication/src/sensor_system.c:192:7:GetNH3_PPM	4	static
+../appication/src/sensor_system.c:199:7:GetCO2_PPM	4	static
+../appication/src/sensor_system.c:206:14:GetNH3AlarmLevel	4	static
+../appication/src/sensor_system.c:213:14:GetCO2AlarmLevel	4	static
+../appication/src/sensor_system.c:220:14:GetSystemAlarmLevel	4	static
+../appication/src/sensor_system.c:227:9:GetSystemStatus	4	static
+../appication/src/sensor_system.c:233:6:SaveToHistory	8	static
+../appication/src/sensor_system.c:241:6:UpdateSystemStatus	16	static

@@ -1,0 +1,5 @@
+../appication/src/sensor_hardware.c:8:7:ReadADC_Voltage	1
+../appication/src/sensor_hardware.c:42:9:ReadDigitalState	1
+../appication/src/sensor_hardware.c:49:7:CalculateResistance	2
+../appication/src/sensor_hardware.c:61:7:CalculateGasPPM	2
+../appication/src/sensor_hardware.c:69:14:DetermineAlarmLevel	4

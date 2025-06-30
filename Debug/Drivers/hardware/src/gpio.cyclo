@@ -1,0 +1,9 @@
+../Drivers/CMSIS/Include/core_cm3.h:1499:26:__NVIC_GetPriorityGrouping	1
+../Drivers/CMSIS/Include/core_cm3.h:1511:22:__NVIC_EnableIRQ	2
+../Drivers/CMSIS/Include/core_cm3.h:1639:22:__NVIC_SetPriority	2
+../Drivers/CMSIS/Include/core_cm3.h:1686:26:NVIC_EncodePriority	2
+../Drivers/hardware/src/gpio.c:4:6:NVICx_Init	1
+../Drivers/hardware/src/gpio.c:15:6:GPIOx_Init	8
+../Drivers/hardware/src/gpio.c:34:6:GPIOx_WritePin	2
+../Drivers/hardware/src/gpio.c:39:9:GPIOx_ReadPin	1
+../Drivers/hardware/src/gpio.c:43:6:GPIOx_TogglePin	1

@@ -1,0 +1,6 @@
+../appication/src/gas_sensor.c:8:6:InitMQ137Sensor	1
+../appication/src/gas_sensor.c:42:6:InitMQ135Sensor	1
+../appication/src/gas_sensor.c:73:6:ProcessGasSensor	4
+../appication/src/gas_sensor.c:112:9:ValidateGasSensor	7
+../appication/src/gas_sensor.c:135:6:UpdateAlarmLevel	1
+../appication/src/gas_sensor.c:141:6:PrintSensorDetails	4

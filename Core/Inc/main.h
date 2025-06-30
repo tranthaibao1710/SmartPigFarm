@@ -1,66 +1,60 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
+/* =============================================================================
+ * MAIN.H - MAIN HEADER FILE
+ * Hệ thống giám sát khí MQ137 & MQ135 - Modular Design
+ * Phiên bản: 3.0
+ * =============================================================================
+ */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/* Includes ------------------------------------------------------------------*/
-#include "stm32f1xx_hal.h"
+// =============================================================================
+// INCLUDES
+// =============================================================================
+#include "stm32f1xx_hal.h"            // HAL library chính cho STM32F1xx
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>                    // printf, sprintf...
+#include <stdlib.h>                   // malloc, free...
+#include <string.h>                   // memset, strcpy...
+#include <stdint.h>                   // uint8_t, uint16_t...
+#include <math.h>                     // pow, log, sqrt...
 
-/* USER CODE END Includes */
 
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
+  // =============================================================================
+  // EXPORTED TYPES
+  // =============================================================================
 
-/* USER CODE END ET */
+  // =============================================================================
+  // EXPORTED CONSTANTS
+  // =============================================================================
 
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
+  // =============================================================================
+  // EXPORTED MACRO
+  // =============================================================================
 
-/* USER CODE END EC */
 
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
+  // =============================================================================
+  // EXPORTED VARIABLES
+  // =============================================================================
 
-/* USER CODE END EM */
 
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
+  // =============================================================================
+  // EXPORTED FUNCTIONS PROTOTYPES
+  // =============================================================================
 
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
+  // System Functions
+  void Error_Handler(void);
+  // Hardware Initialization Functions
+  void SystemClock_Config(void);
+  // Application Functions
+  int main(void);
 
 #ifdef __cplusplus
 }

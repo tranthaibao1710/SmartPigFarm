@@ -1,0 +1,10 @@
+../Drivers/hardware/src/uart.c:9:6:USARTx_Init	8
+../Drivers/hardware/src/uart.c:61:6:USARTtoBUFF	3
+../Drivers/hardware/src/uart.c:69:6:USARTx_GetC	6
+../Drivers/hardware/src/uart.c:84:10:USARTx_isEMPTY	4
+../Drivers/hardware/src/uart.c:93:10:USARTx_GetS	6
+../Drivers/hardware/src/uart.c:126:6:USART_PutC	2
+../Drivers/hardware/src/uart.c:130:6:USART_PutS	2
+../Drivers/hardware/src/uart.c:135:6:USART1_IRQHandler	2
+../Drivers/hardware/src/uart.c:143:6:USART2_IRQHandler	2
+../Drivers/hardware/src/uart.c:151:6:USART3_IRQHandler	2

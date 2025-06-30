@@ -21,3 +21,6 @@
 "./Drivers/hardware/src/adc.o"
 "./Drivers/hardware/src/gpio.o"
 "./Drivers/hardware/src/uart.o"
+"./appication/src/gas_sensor.o"
+"./appication/src/sensor_hardware.o"
+"./appication/src/sensor_system.o"
