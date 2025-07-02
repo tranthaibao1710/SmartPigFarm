@@ -25,23 +25,14 @@ void InitSensorSystem(void) {
     InitMQ137Sensor(&g_sensor_system.mq137);
     InitMQ135Sensor(&g_sensor_system.mq135);
     
-    // Cấu hình GPIO cho digital pins
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    
     // MQ137 Digital Pin
-    GPIO_InitStruct.Pin = MQ137_DIGITAL_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    HAL_GPIO_Init(MQ137_DIGITAL_PORT, &GPIO_InitStruct);
-    
+    GPIOx_Init(MQ137_DIGITAL_PORT ,MQ137_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ; 
     // MQ135 Digital Pin
-    GPIO_InitStruct.Pin = MQ135_DIGITAL_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    HAL_GPIO_Init(MQ135_DIGITAL_PORT, &GPIO_InitStruct);
+    GPIOx_Init(MQ135_DIGITAL_PORT ,MQ135_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ;
+// Khởi tạo ADC cho các channel analog
+    ADCx_Init(ADC1, MQ137_ADC_CHANNEL);
+    ADCx_Init(ADC1, MQ135_ADC_CHANNEL);
     
-    // Khởi tạo ADC
-   // HAL_ADC_Start(&hadc1);
     
     // Cập nhật trạng thái hệ thống
     g_sensor_system.active_sensor_count = 2;

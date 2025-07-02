@@ -3,6 +3,7 @@
     "files.associations": {
         "sensor_core.h": "c",
         "gas_sensor.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "uart.h": "c"
     }
 }

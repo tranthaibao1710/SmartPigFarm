@@ -8,3 +8,4 @@
 ../Drivers/hardware/src/uart.c:135:6:USART1_IRQHandler	16	static
 ../Drivers/hardware/src/uart.c:143:6:USART2_IRQHandler	16	static
 ../Drivers/hardware/src/uart.c:151:6:USART3_IRQHandler	16	static
+../Drivers/hardware/src/uart.c:165:5:__io_putchar	16	static

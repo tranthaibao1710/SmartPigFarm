@@ -1,3 +1,3 @@
 ../Drivers/hardware/src/adc.c:3:6:ADCx_Init	14
-../Drivers/hardware/src/adc.c:42:10:ADCx_Read	3
-../Drivers/hardware/src/adc.c:59:10:ADCx_Read_TB	2
+../Drivers/hardware/src/adc.c:54:10:ADCx_Read	3
+../Drivers/hardware/src/adc.c:79:10:ADCx_Read_TB	3

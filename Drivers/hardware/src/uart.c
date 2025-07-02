@@ -37,10 +37,10 @@ void USARTx_Init(USART_TypeDef * USARTx,USART_Pin Pin,uint32_t baud)
 		GPIOx_Init(GPIOB,11, INPUT_FLOATING,NOPULL, 0);//rx
 	 }
 		USARTDIV = (float)(PCLKx/(16.0*baud)) ;
-	  mantisa  = (uint16_t)USARTDIV ; 
-    fraction = (USARTDIV - mantisa)*16 ; 	
+	    mantisa  = (uint16_t)USARTDIV ; 
+        fraction = (USARTDIV - mantisa)*16 ; 	
 		USARTx->BRR = (mantisa <<4)+fraction ; 
-    USARTx->CR1 |=1<<2;//tx
+      USARTx->CR1 |=1<<2;//tx
 	  USARTx->CR1 |=1<<3;//rx
 	  USARTx->CR1 |=1<<13 ; //enable usart
     USARTx->CR1 |=1<<5; //it
@@ -155,3 +155,17 @@ void USART3_IRQHandler(void)
         USARTtoBUFF(&USART3_ST, data);         // ? Luu vào buffer USART3
     }
 }
+
+
+
+// =============================================================================
+// PRINTF UART REDIRECT
+// =============================================================================
+#ifdef __GNUC__
+int _write(int file, char *ptr, int len) {
+    for (int i = 0; i < len; i++) {
+        USART_PutC(USART1, ptr[i]);
+    }
+    return len;
+}
+#endif

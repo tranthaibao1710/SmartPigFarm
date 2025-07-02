@@ -6,41 +6,22 @@
  */
 #include "sensor_hardware.h"
 float ReadADC_Voltage(uint32_t channel) {
-    /*ADC_ChannelConfTypeDef sConfig = {0};
-    sConfig.Channel = channel;
-    sConfig.Rank = ADC_REGULAR_RANK_1;
-    sConfig.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
+    // Đọc giá trị ADC trung bình
+    float adc_avg = ADCx_Read_TB(ADC1, channel, 10);
     
-    if(HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK) {
-        return 0.0f;
-    }
-    
-    // Đọc nhiều lần và lấy trung bình để giảm nhiễu
-    uint32_t adc_sum = 0;
-    for(int i = 0; i < 10; i++) {
-        HAL_ADC_Start(&hadc1);
-        HAL_ADC_PollForConversion(&hadc1, 100);
-        adc_sum += HAL_ADC_GetValue(&hadc1);
-        HAL_ADC_Stop(&hadc1);
-        HAL_Delay(1); // Delay nhỏ giữa các lần đo
-    }
-    
-    uint32_t adc_avg = adc_sum / 10;
-    
-    // Chuyển đổi giá trị ADC sang điện áp thực tế
-    float adc_voltage = (float)adc_avg * ADC_VREF / ADC_RESOLUTION;
+    // Chuyển đổi giá trị ADC sang điện áp tại chân ADC
+    float adc_voltage = adc_avg * ADC_VREF / ADC_RESOLUTION;
     
     // Hiệu chỉnh cho mạch chia áp để có điện áp thực của cảm biến
     float sensor_voltage = adc_voltage / VOLTAGE_DIVIDER_RATIO;
     
-    return sensor_voltage;*/
+    return sensor_voltage;
 }
-
 /**
  * @brief Đọc trạng thái digital
  */
 uint8_t ReadDigitalState(GPIO_TypeDef* port, uint16_t pin) {
-    return HAL_GPIO_ReadPin(port, pin);
+    return GPIOx_ReadPin(port , pin );
 }
 
 /**

@@ -71,7 +71,7 @@ int main(void)
     TestSensorSystem();
 
     // Hiệu chuẩn nếu cần (uncomment để chạy)
-    // CalibrateSensors();
+    CalibrateSensors();
 
     printf("\r\n🚀 BẮT ĐẦU GIÁM SÁT LIÊN TỤC\r\n");
     printf("Press any key to stop...\r\n");

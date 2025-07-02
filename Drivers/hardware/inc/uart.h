@@ -4,6 +4,7 @@
 #include "gpio.h"
 #include "stm32f103xb.h"
 #include <stdint.h>
+#include <stdio.h>
 typedef enum{
 PA9PA10, //usart1
 PB6PB7, // uart1
@@ -30,7 +31,7 @@ void USART_PutS(USART_TypeDef * USARTx ,char *str );
 void USART1_IRQHandler(void);
 void USART2_IRQHandler(void);   
 void USART3_IRQHandler(void);   
-    
+int __io_putchar(int ch) ;  
 
 
 
