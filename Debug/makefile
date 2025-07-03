@@ -54,6 +54,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 SmartPigFarm.list \
 
+OBJCOPY_HEX += \
+SmartPigFarm.hex \
+
 
 # All Target
 all: main-build
@@ -77,12 +80,17 @@ SmartPigFarm.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+SmartPigFarm.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "SmartPigFarm.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) SmartPigFarm.elf SmartPigFarm.list SmartPigFarm.map default.size.stdout
+	-$(RM) SmartPigFarm.elf SmartPigFarm.hex SmartPigFarm.list SmartPigFarm.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

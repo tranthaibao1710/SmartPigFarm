@@ -21,7 +21,10 @@ Core/Src/stm32f1xx_hal_msp.o: ../Core/Src/stm32f1xx_hal_msp.c \
  C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h \
  C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h \
  C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
- C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+ C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
+ C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/uart.h \
+ C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/gpio.h \
+ ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h
 C:/BaooHCMUT/TTNT/SmartPigFarm/Core/Inc/main.h:
 C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 C:/BaooHCMUT/TTNT/SmartPigFarm/Core/Inc/stm32f1xx_hal_conf.h:
@@ -45,3 +48,6 @@ C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_co
 C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h:
 C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h:
 C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
+C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/uart.h:
+C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/gpio.h:
+../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h:

@@ -29,9 +29,7 @@ void InitSensorSystem(void) {
     GPIOx_Init(MQ137_DIGITAL_PORT ,MQ137_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ; 
     // MQ135 Digital Pin
     GPIOx_Init(MQ135_DIGITAL_PORT ,MQ135_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ;
-// Khởi tạo ADC cho các channel analog
-    ADCx_Init(ADC1, MQ137_ADC_CHANNEL);
-    ADCx_Init(ADC1, MQ135_ADC_CHANNEL);
+
     
     
     // Cập nhật trạng thái hệ thống

@@ -5,9 +5,8 @@
  * =============================================================================
  */
 
-#include "main.h"
 #include "sensor_system.h"
-#include "sensor_types.h"
+
 // =============================================================================
 // PRIVATE INCLUDES
 // =============================================================================
@@ -47,7 +46,7 @@ int main(void)
     SystemClock_Config();
    // GPIOx_Init();
    // ADCx_Init();
-   // UARTx_Init();
+    USARTx_Init(USART1,PA9PA10,115200);
 
     // Display welcome message
     printf("\r\n╔════════════════════════════════════════╗\r\n");
