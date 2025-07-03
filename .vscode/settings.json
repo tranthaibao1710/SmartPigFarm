@@ -4,6 +4,10 @@
         "sensor_core.h": "c",
         "gas_sensor.h": "c",
         "gpio.h": "c",
-        "uart.h": "c"
+        "uart.h": "c",
+        "sensor_system.h": "c",
+        "sensor_hardware.h": "c",
+        "sensor_config.h": "c",
+        "main.h": "c"
     }
 }

@@ -69,39 +69,38 @@ void InitMQ135Sensor(GasSensor_t* sensor) {
     // Khởi tạo giá trị
     sensor->alarm_level = ALARM_NORMAL;
 }
-
 void ProcessGasSensor(GasSensor_t* sensor) {
-    // Đọc dữ liệu thô
+
     sensor->base.raw_voltage = ReadADC_Voltage(sensor->base.adc_channel);
     sensor->base.digital_state = ReadDigitalState(sensor->base.digital_port, sensor->base.digital_pin);
     sensor->base.timestamp = HAL_GetTick();
-    
+
     // Tính toán điện trở và tỷ lệ Rs/R0
     if(sensor->base.raw_voltage > 0.2f) { // Ngưỡng thấp hơn cho ADC 3.3V
         sensor->base.resistance = CalculateResistance(sensor->base.raw_voltage);
         sensor->base.rs_r0_ratio = sensor->base.resistance / sensor->base.r0_value;
-        
+
         // Tính nồng độ khí
         sensor->gas_ppm = CalculateGasPPM(sensor->base.rs_r0_ratio, sensor->curve_a, sensor->curve_b);
-        
+
         // Giới hạn giá trị trong khoảng hợp lệ
         if(sensor->gas_ppm < sensor->min_ppm) sensor->gas_ppm = sensor->min_ppm;
         if(sensor->gas_ppm > sensor->max_ppm) sensor->gas_ppm = sensor->max_ppm;
-        
+
         // Lọc nhiễu đơn giản (moving average)
         sensor->filtered_ppm = 0.8f * sensor->filtered_ppm + 0.2f * sensor->gas_ppm;
         sensor->average_ppm = sensor->filtered_ppm;
-        
+
     } else {
         sensor->base.resistance = 0.0f;
         sensor->base.rs_r0_ratio = 0.0f;
         sensor->gas_ppm = sensor->min_ppm;
         sensor->filtered_ppm = sensor->min_ppm;
     }
-    
+
     // Validate dữ liệu
     sensor->base.is_valid = ValidateGasSensor(sensor);
-    
+
     // Cập nhật mức cảnh báo
     UpdateAlarmLevel(sensor);
 }

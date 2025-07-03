@@ -29,7 +29,8 @@ void InitSensorSystem(void) {
     GPIOx_Init(MQ137_DIGITAL_PORT ,MQ137_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ; 
     // MQ135 Digital Pin
     GPIOx_Init(MQ135_DIGITAL_PORT ,MQ135_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ;
-
+    ADCx_Init(ADC1,MQ137_ADC_CHANNEL); // Khởi tạo ADC cho MQ137
+    ADCx_Init(ADC1,MQ135_ADC_CHANNEL); // Khởi tạo ADC cho MQ135
     
     
     // Cập nhật trạng thái hệ thống
@@ -50,16 +51,17 @@ void InitSensorSystem(void) {
 }
 void ProcessAllSensors(void) {
     uint32_t current_time = HAL_GetTick();
-    
+    printf  ("\r\n=== XỬ LÝ CẢM BIẾN TẠI %lu ms ===\r\n", current_time);
     // Xử lý từng cảm biến
     if(g_sensor_system.mq137.base.is_enabled) {
         ProcessGasSensor(&g_sensor_system.mq137);
+
     }
-    
+        
+
     if(g_sensor_system.mq135.base.is_enabled) {
         ProcessGasSensor(&g_sensor_system.mq135);
     }
-    
     // Cập nhật trạng thái hệ thống
     UpdateSystemStatus();
     
