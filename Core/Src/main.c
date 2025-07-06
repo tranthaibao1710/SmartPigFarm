@@ -44,22 +44,12 @@ int main(void)
   // HAL Initialization
   HAL_Init();
   SystemClock_Config();
-  // GPIOx_Init();
-  // ADCx_Init();
   USARTx_Init(USART1, PA9PA10, 115200);
 
   // Display welcome message
   printf("HE THONG GIAM SAT KHI NH3 & CO2\n");
-  printf("         HE THONG          \n");
-  printf("      Cảm biến: MQ137 + MQ135          \r\n");
-  printf("      ADC: 3.3V (cần mạch chia áp)     \r\n");
-
-  printf("\r\n⚠️  LƯU Ý QUAN TRỌNG:\r\n");
-  printf("   - STM32F103 chỉ đo ADC 0-3.3V\r\n");
-  printf("   - Cảm biến MQ hoạt động ở 5V\r\n");
-  printf("   - CẦN mạch chia áp cho AOUT:\r\n");
-  printf("     AOUT → R1(2.7kΩ) → ADC_PIN → R2(5.1kΩ) → GND\r\n");
-  printf("   - Hoặc dùng Op-Amp buffer với gain = 0.66\r\n\r\n");
+  printf("CAM BIEN: MQ137 + MQ135          \r\n");
+ 
 
   // Khởi tạo hệ thống cảm biến
   InitSensorSystem();
@@ -70,7 +60,7 @@ int main(void)
   // Hiệu chuẩn nếu cần (uncomment để chạy)
   CalibrateSensors();
 
-  printf("\r\n🚀 BẮT ĐẦU GIÁM SÁT LIÊN TỤC\r\n");
+  printf("\r\n BAT DAU GIAM SAT\r\n");
   printf("Press any key to stop...\r\n");
 
   // Main loop
@@ -90,44 +80,63 @@ int main(void)
     AlarmLevel_t system_alarm = GetSystemAlarmLevel();
 
     // Logic điều khiển NH3
-    if (nh3_alarm >= ALARM_HIGH)
-    {
-      printf("🚨 NH3 = %.1f ppm - BẬT QUẠT THÔNG GIÓ!\r\n", nh3_ppm);
-      // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
+ // Debug thong tin
+    printf("DEBUG - NH3: %.1f ppm, Alarm Level: %d\r\n", nh3_ppm, nh3_alarm);
+    printf("DEBUG - CO2: %.1f ppm, Alarm Level: %d\r\n", co2_ppm, co2_alarm);
+    
+    // Logic dieu khien NH3 - day du tat ca truong hop
+    printf("\r\nNH3 STATUS: ");
+    if(nh3_alarm == ALARM_DANGER) {
+        printf("NH3 = %.1f ppm - NGUY HIEM! BAT QUAT MAX!\r\n", nh3_ppm);
+        // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
     }
-    else if (nh3_alarm <= ALARM_NORMAL)
-    {
-      printf("✅ NH3 = %.1f ppm - Bình thường\r\n", nh3_ppm);
-      // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_RESET);
+    else if(nh3_alarm == ALARM_HIGH) {
+        printf("NH3 = %.1f ppm - BAT QUAT THONG GIO!\r\n", nh3_ppm);
+        // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
     }
-
-    // Logic điều khiển CO2
-    if (co2_alarm >= ALARM_HIGH)
-    {
-      printf("🚨 CO2 = %.1f ppm - CẦN THÔNG GIÓ!\r\n", co2_ppm);
-      // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_SET);
+    else if(nh3_alarm == ALARM_LOW) {
+        printf("NH3 = %.1f ppm - Canh bao thap\r\n", nh3_ppm);
+        // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_RESET);
     }
-    else if (co2_alarm <= ALARM_NORMAL)
-    {
-      printf("✅ CO2 = %.1f ppm - Bình thường\r\n", co2_ppm);
-      // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_RESET);
+    else { // ALARM_NORMAL
+        printf("NH3 = %.1f ppm - Binh thuong\r\n", nh3_ppm);
+        // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_RESET);
+    }
+    
+    // Logic dieu khien CO2 - day du tat ca truong hop
+    printf("CO2 STATUS: ");
+    if(co2_alarm == ALARM_DANGER) {
+        printf("CO2 = %.1f ppm - NGUY HIEM! CAN THONG GIO NGAY!\r\n", co2_ppm);
+        // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_SET);
+    }
+    else if(co2_alarm == ALARM_HIGH) {
+        printf("CO2 = %.1f ppm - BAT QUAT THONG GIO!\r\n", co2_ppm);
+        // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_SET);
+    }
+    else if(co2_alarm == ALARM_LOW) {
+        printf("CO2 = %.1f ppm - Canh bao thap\r\n", co2_ppm);
+        // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_RESET);
+    }
+    else { // ALARM_NORMAL
+        printf("CO2 = %.1f ppm - Binh thuong\r\n", co2_ppm);
+        // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_RESET);
     }
 
     // Cảnh báo tổng thể
     switch (system_alarm)
     {
     case ALARM_DANGER:
-      printf("🚨🚨 NGUY HIỂM! KIỂM TRA NGAY LẬP TỨC! 🚨🚨\r\n");
+      printf("NGUY HIEM - KIEM TRA NGAY LAP TUC\r\n");
       // HAL_GPIO_WritePin(BUZZER_PORT, BUZZER_PIN, GPIO_PIN_SET);
       break;
     case ALARM_HIGH:
-      printf("⚠️ CẢNH BÁO CAO - Cần chú ý ngay\r\n");
+      printf("CANH BAO CAO - CHU Y NGAY\r\n");
       break;
     case ALARM_LOW:
-      printf("⚠️ Cảnh báo thấp - Theo dõi\r\n");
+      printf("CANH BAO THAP - TIEP TUC THEO DOI\r\n");
       break;
     default:
-      printf("✅ Hệ thống hoạt động bình thường\r\n");
+      printf("HE THONG HOAT DONG BINH THUONG\r\n");
       // HAL_GPIO_WritePin(BUZZER_PORT, BUZZER_PIN, GPIO_PIN_RESET);
       break;
     }
@@ -145,8 +154,8 @@ int main(void)
     // - Log dữ liệu
     // LogToFile(&g_sensor_system);
 
-    printf("\r\n⏳ Chờ 60 giây để đo tiếp...\r\n");
-    printf("────────────────────────────────────────\r\n");
+    printf("\r\nCHO 60 GIAY DE DO TIEP\r\n");
+    
 
     HAL_Delay(MAIN_LOOP_DELAY); // Chờ 1 phút
   }

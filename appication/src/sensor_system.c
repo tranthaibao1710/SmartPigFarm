@@ -15,7 +15,7 @@ static uint8_t history_index = 0;
 // Các define khác cần thiết
 #define MAIN_LOOP_DELAY 60000  // 1 phút = 60000ms
 void InitSensorSystem(void) {
-    printf("\r\n=== KHỞI TẠO HỆ THỐNG CẢM BIẾN ===\r\n");
+    printf("\r\nKHOI TAO HE THONG\r\n");
     
     // Reset toàn bộ hệ thống
     memset(&g_sensor_system, 0, sizeof(SensorSystem_t));
@@ -37,21 +37,21 @@ void InitSensorSystem(void) {
     g_sensor_system.active_sensor_count = 2;
     g_sensor_system.last_update = HAL_GetTick();
     
-    printf("✓ Khởi tạo MQ137 (NH3): %s\r\n", g_sensor_system.mq137.base.is_enabled ? "OK" : "FAIL");
-    printf("✓ Khởi tạo MQ135 (CO2): %s\r\n", g_sensor_system.mq135.base.is_enabled ? "OK" : "FAIL");
-    printf("✓ Cảm biến hoạt động: %d/2\r\n", g_sensor_system.active_sensor_count);
+    printf("KHOI TAO MQ137 (NH3): %s\r\n", g_sensor_system.mq137.base.is_enabled ? "OK" : "FAIL");
+    printf("KHOI TAO MQ135 (CO2): %s\r\n", g_sensor_system.mq135.base.is_enabled ? "OK" : "FAIL");
+    printf("CAM BIEN HOAT DONG: %d/2\r\n", g_sensor_system.active_sensor_count);
     
     // Thời gian ổn định
-    printf("✓ Đang ổn định cảm biến...\r\n");
+    printf("DANG ON DINH CAM BIEN...\r\n");
     for(int i = 30; i > 0; i--) {
-        printf("Ổn định: %d giây\r", i);
+        printf("ON DINH: %d GIAY\r", i);
         HAL_Delay(1000);
     }
-    printf("\r\n✓ Hệ thống sẵn sàng!\r\n");
+    printf("\r\nHE THONG SAN SANG\r\n");
 }
 void ProcessAllSensors(void) {
     uint32_t current_time = HAL_GetTick();
-    printf  ("\r\n=== XỬ LÝ CẢM BIẾN TẠI %lu ms ===\r\n", current_time);
+    printf  ("\r\nXU LY CAM BIEN TAI %lu ms \r\n", current_time);
     // Xử lý từng cảm biến
     if(g_sensor_system.mq137.base.is_enabled) {
         ProcessGasSensor(&g_sensor_system.mq137);
@@ -77,8 +77,8 @@ void ProcessAllSensors(void) {
  * @brief Hiển thị trạng thái hệ thống
  */
 void DisplaySystemStatus(void) {
-    printf("\r\n=== TRẠNG THÁI HỆ THỐNG CẢM BIẾN ===\r\n");
-    printf("Thời gian: %lu ms | Uptime: %.1f phút\r\n", 
+    printf("\r\n=== TRANG THAI HE THONG CAM BIEN ===\r\n");
+    printf("TIME: %lu ms | Uptime: %.1f PHUT\r\n", 
            HAL_GetTick(), g_sensor_system.uptime_minutes);
     
     // Hiển thị MQ137
@@ -88,14 +88,14 @@ void DisplaySystemStatus(void) {
     PrintSensorDetails(&g_sensor_system.mq135);
     
     // Trạng thái tổng thể
-    printf("\r\n--- HỆ THỐNG ---\r\n");
-    const char* status_text[] = {"LỖI", "Cơ bản", "Tốt", "Tối ưu"};
-    const char* alarm_text[] = {"Bình thường", "Thấp", "Cao", "NGUY HIỂM"};
+    printf("\r\n--- HE THONG ---\r\n");
+    const char* status_text[] = {"LOI", "CO BAN", "TOT", "TOI UU"};
+    const char* alarm_text[] = {"BINH THUONG", "THAP", "CAO", "NGUY HIEM"};
     
-    printf("Trạng thái: %s (%d/2 cảm biến hoạt động)\r\n", 
+    printf("TRANG THAI: %s (%d/2 CAM BIEN HOAT DONG)\r\n", 
            status_text[g_sensor_system.system_status], g_sensor_system.active_sensor_count);
-    printf("Cảnh báo tổng thể: %s\r\n", alarm_text[g_sensor_system.system_alarm]);
-    printf("Tổng số đo: %lu | Lỗi: %lu\r\n", 
+    printf("CANH BAO TONG THE %s\r\n", alarm_text[g_sensor_system.system_alarm]);
+    printf("TONG SO DO: %lu | LOI: %lu\r\n", 
            g_sensor_system.total_readings, g_sensor_system.error_count);
     
     printf("=====================================\r\n");
@@ -105,10 +105,10 @@ void DisplaySystemStatus(void) {
  * @brief Test hệ thống
  */
 void TestSensorSystem(void) {
-    printf("\r\n=== TEST HỆ THỐNG CẢM BIẾN ===\r\n");
+    printf("\r\nTEST HE THONG CAM BIEN\r\n");
     
     for(int i = 0; i < 10; i++) {
-        printf("Test lần %d:\r\n", i + 1);
+        printf("TEST LAN  %d:\r\n", i + 1);
         
         ProcessAllSensors();
         
@@ -116,21 +116,21 @@ void TestSensorSystem(void) {
                GetNH3_PPM(), GetNH3AlarmLevel());
         printf("  MQ135: %.1f ppm CO2 (Alarm: %d)\r\n", 
                GetCO2_PPM(), GetCO2AlarmLevel());
-        printf("  Hệ thống: Status=%d, Alarm=%d\r\n\r\n", 
+        printf("  HE THONG: Status=%d, Alarm=%d\r\n\r\n", 
                GetSystemStatus(), GetSystemAlarmLevel());
         
         HAL_Delay(3000);
     }
     
-    printf("✓ Test hoàn tất!\r\n");
+    printf("TEST HOAN TAT\r\n");
 }
 /**
  * @brief Hiệu chuẩn cảm biến
  */
 void CalibrateSensors(void) {
-    printf("\r\n=== HIỆU CHUẨN CẢM BIẾN ===\r\n");
-    printf("Đặt cảm biến trong không khí sạch...\r\n");
-    printf("Đang đo R0 trong 30 giây...\r\n");
+    printf("\r\nHIEU CHUAN CAM BIEN\r\n");
+    printf("DAT CAM BIEN TRONG KHONG KHI SACH...\r\n");
+    printf("DANG DO R0 TRONG 30 GIAY\r\n");
     
     float mq137_r0_sum = 0;
     float mq135_r0_sum = 0;
@@ -145,7 +145,7 @@ void CalibrateSensors(void) {
             valid_samples++;
         }
         
-        printf("Mẫu %d: MQ137=%.1fΩ, MQ135=%.1fΩ\r\n", 
+        printf("MAU %d: MQ137=%.1fΩ, MQ135=%.1fΩ\r\n", 
                i+1, g_sensor_system.mq137.base.resistance, g_sensor_system.mq135.base.resistance);
         
         HAL_Delay(1000);
@@ -159,14 +159,14 @@ void CalibrateSensors(void) {
         g_sensor_system.mq137.base.r0_value = mq137_r0_avg;
         g_sensor_system.mq135.base.r0_value = mq135_r0_avg;
         
-        printf("\r\n=== KẾT QUẢ HIỆU CHUẨN ===\r\n");
+        printf("\r\nKET QUA HIEU CHUAN\r\n");
         printf("MQ137 R0: %.1f Ω\r\n", mq137_r0_avg);
         printf("MQ135 R0: %.1f Ω\r\n", mq135_r0_avg);
-        printf("Mẫu hợp lệ: %d/30\r\n", valid_samples);
-        printf("\r\nCập nhật trong code:\r\n");
-        printf("#define MQ137_R0 %.1ff\r\n", mq137_r0_avg);
-        printf("#define MQ135_R0 %.1ff\r\n", mq135_r0_avg);
-        printf("✓ Hiệu chuẩn thành công!\r\n");
+        printf("MAU HOP LE %d/30\r\n", valid_samples);
+      //  printf("\r\nCập nhật trong code:\r\n");
+      //  printf("#define MQ137_R0 %.1ff\r\n", mq137_r0_avg);
+      //  printf("#define MQ135_R0 %.1ff\r\n", mq135_r0_avg);
+        printf("HIEU CHUAN THANH CONG\r\n");
     }
     else {
         printf("❌ Hiệu chuẩn thất bại - không có mẫu hợp lệ!\r\n");

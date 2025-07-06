@@ -139,19 +139,19 @@ void UpdateAlarmLevel(GasSensor_t* sensor) {
 }
 void PrintSensorDetails(GasSensor_t* sensor) {
     printf("\r\n--- %s (%s) ---\r\n", sensor->base.sensor_name, sensor->gas_name);
-    printf("ID: %d | Trạng thái: %s\r\n", 
+    printf("ID: %d | TRANG THAI: %s\r\n", 
            sensor->base.sensor_id, 
-           sensor->base.is_enabled ? (sensor->base.is_valid ? "Hoạt động" : "Lỗi") : "Tắt");
-    printf("Điện áp: %.3f V | Điện trở: %.1f Ω\r\n", 
+           sensor->base.is_enabled ? (sensor->base.is_valid ? "HOAT DONG" : "LOI") : "OFF");
+    printf("DIEN AP: %.3f V | DIEN TRO: %.1f Ω\r\n", 
            sensor->base.raw_voltage, sensor->base.resistance);
     printf("Rs/R0: %.3f | R0: %.1f Ω\r\n", 
            sensor->base.rs_r0_ratio, sensor->base.r0_value);
-    printf("Nồng độ: %.1f %s (Lọc: %.1f %s)\r\n", 
+    printf("NONG DO: %.1f %s (LOC: %.1f %s)\r\n", 
            sensor->gas_ppm, sensor->unit, sensor->filtered_ppm, sensor->unit);
     printf("Digital: %s\r\n", sensor->base.digital_state ? "HIGH" : "LOW");
     
-    const char* alarm_text[] = {"Bình thường", "Thấp", "Cao", "NGUY HIỂM"};
-    printf("Cảnh báo: %s (%.1f/%.1f/%.1f)\r\n", 
+    const char* alarm_text[] = {"BINH THUONG", "THAP", "CAO", "NGUY HIEM"};
+    printf("CANH BAO: %s (%.1f/%.1f/%.1f)\r\n", 
            alarm_text[sensor->alarm_level],
            sensor->threshold_low, sensor->threshold_high, sensor->threshold_danger);
 }
