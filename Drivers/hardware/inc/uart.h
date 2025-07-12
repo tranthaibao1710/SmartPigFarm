@@ -1,7 +1,7 @@
 
 #ifndef HARDWARE_INC_UART_H_
 #define HARDWARE_INC_UART_H_
-#include "adc.h"
+#include "i2c.h"
 #include "stm32f103xb.h"
 #include <stdint.h>
 #include <stdio.h>

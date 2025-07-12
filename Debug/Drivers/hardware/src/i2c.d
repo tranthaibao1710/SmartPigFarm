@@ -1,5 +1,4 @@
-Drivers/hardware/src/uart.o: ../Drivers/hardware/src/uart.c \
- C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/uart.h \
+Drivers/hardware/src/i2c.o: ../Drivers/hardware/src/i2c.c \
  C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/i2c.h \
  C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/adc.h \
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h \
@@ -9,7 +8,6 @@ Drivers/hardware/src/uart.o: ../Drivers/hardware/src/uart.c \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h \
  C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/gpio.h
-C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/uart.h:
 C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/i2c.h:
 C:/BaooHCMUT/TTNT/SmartPigFarm/Drivers/hardware/inc/adc.h:
 ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h:

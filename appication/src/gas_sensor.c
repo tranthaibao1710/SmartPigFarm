@@ -146,8 +146,8 @@ void PrintSensorDetails(GasSensor_t* sensor) {
            sensor->base.raw_voltage, sensor->base.resistance);
     printf("Rs/R0: %.3f | R0: %.1f Ω\r\n", 
            sensor->base.rs_r0_ratio, sensor->base.r0_value);
-    printf("NONG DO: %.1f %s (LOC: %.1f %s)\r\n", 
-           sensor->gas_ppm, sensor->unit, sensor->filtered_ppm, sensor->unit);
+    printf("NONG DO: %.1f %s \r\n", 
+           sensor->gas_ppm, sensor->unit);
     printf("Digital: %s\r\n", sensor->base.digital_state ? "HIGH" : "LOW");
     
     const char* alarm_text[] = {"BINH THUONG", "THAP", "CAO", "NGUY HIEM"};

@@ -3,4 +3,4 @@
 ../appication/src/gas_sensor.c:72:6:ProcessGasSensor	24	static
 ../appication/src/gas_sensor.c:111:9:ValidateGasSensor	16	static
 ../appication/src/gas_sensor.c:134:6:UpdateAlarmLevel	16	static
-../appication/src/gas_sensor.c:140:6:PrintSensorDetails	80	static
+../appication/src/gas_sensor.c:140:6:PrintSensorDetails	72	static

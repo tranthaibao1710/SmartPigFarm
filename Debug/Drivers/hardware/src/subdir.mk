@@ -7,16 +7,19 @@
 C_SRCS += \
 ../Drivers/hardware/src/adc.c \
 ../Drivers/hardware/src/gpio.c \
+../Drivers/hardware/src/i2c.c \
 ../Drivers/hardware/src/uart.c 
 
 OBJS += \
 ./Drivers/hardware/src/adc.o \
 ./Drivers/hardware/src/gpio.o \
+./Drivers/hardware/src/i2c.o \
 ./Drivers/hardware/src/uart.o 
 
 C_DEPS += \
 ./Drivers/hardware/src/adc.d \
 ./Drivers/hardware/src/gpio.d \
+./Drivers/hardware/src/i2c.d \
 ./Drivers/hardware/src/uart.d 
 
 
@@ -27,7 +30,7 @@ Drivers/hardware/src/%.o Drivers/hardware/src/%.su Drivers/hardware/src/%.cyclo:
 clean: clean-Drivers-2f-hardware-2f-src
 
 clean-Drivers-2f-hardware-2f-src:
-	-$(RM) ./Drivers/hardware/src/adc.cyclo ./Drivers/hardware/src/adc.d ./Drivers/hardware/src/adc.o ./Drivers/hardware/src/adc.su ./Drivers/hardware/src/gpio.cyclo ./Drivers/hardware/src/gpio.d ./Drivers/hardware/src/gpio.o ./Drivers/hardware/src/gpio.su ./Drivers/hardware/src/uart.cyclo ./Drivers/hardware/src/uart.d ./Drivers/hardware/src/uart.o ./Drivers/hardware/src/uart.su
+	-$(RM) ./Drivers/hardware/src/adc.cyclo ./Drivers/hardware/src/adc.d ./Drivers/hardware/src/adc.o ./Drivers/hardware/src/adc.su ./Drivers/hardware/src/gpio.cyclo ./Drivers/hardware/src/gpio.d ./Drivers/hardware/src/gpio.o ./Drivers/hardware/src/gpio.su ./Drivers/hardware/src/i2c.cyclo ./Drivers/hardware/src/i2c.d ./Drivers/hardware/src/i2c.o ./Drivers/hardware/src/i2c.su ./Drivers/hardware/src/uart.cyclo ./Drivers/hardware/src/uart.d ./Drivers/hardware/src/uart.o ./Drivers/hardware/src/uart.su
 
 .PHONY: clean-Drivers-2f-hardware-2f-src
 

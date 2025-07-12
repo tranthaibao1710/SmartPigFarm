@@ -48,9 +48,33 @@ int main(void)
 
   // Display welcome message
   printf("HE THONG GIAM SAT KHI NH3 & CO2\n");
-  printf("CAM BIEN: MQ137 + MQ135          \r\n");
+  printf("CAM BIEN: MQ137 + MQ135 + RTC DS3231\r\n");
  
-
+  // =============================================================================
+  // KHỞI TẠO RTC DS3231 - ĐơN GIẢN
+  // =============================================================================
+  printf("\r\nKHOI TAO RTC DS3231 \r\n");
+  
+  // Khởi tạo I2C cho DS3231
+  I2Cx_Init(I2C1, Pin_PB6PB7, 100000);
+  printf(" I2C1 da khoi tao cho DS3231\r\n");
+  
+  // Thiết lập thời gian ban đầu (chỉ chạy 1 lần khi cần)
+  // Uncomment dòng dưới để set thời gian:
+   DS3231Set(0, 18, 0, 7, 12, 7, 25);  // 17:15:00, Thứ 6, 11/07/2025
+  
+  // Test đọc thời gian với biến local
+  uint8_t test_gio, test_phut, test_giay, test_thu, test_ngay, test_thang, test_nam;
+  DS3231Read(&test_gio, &test_phut, &test_giay, &test_thu, &test_ngay, &test_thang, &test_nam);
+  printf("Thoi gian hien tai: %02d:%02d:%02d %02d/%02d/20%02d\r\n",
+         test_gio, test_phut, test_giay, test_ngay, test_thang, test_nam);
+  
+  printf(" RTC da san sang\r\n");
+  
+  // =============================================================================
+  // KHỞI TẠO HỆ THỐNG CẢM BIẾN (GỮ NGUYÊN)
+  // =============================================================================
+  
   // Khởi tạo hệ thống cảm biến
   InitSensorSystem();
 
@@ -58,19 +82,42 @@ int main(void)
   TestSensorSystem();
 
   // Hiệu chuẩn nếu cần (uncomment để chạy)
-  CalibrateSensors();
-
+  //CalibrateSensors();
+  SetManualR0(25000, 115000); // Set R0 cho MQ137 & MQ135
   printf("\r\n BAT DAU GIAM SAT\r\n");
   printf("Press any key to stop...\r\n");
 
+  // =============================================================================
+  // BIẾN ĐỂ QUẢN LÝ LOG THEO THỜI GIAN
+  // =============================================================================
+  uint32_t last_log_minute = 255; // Giá trị ban đầu không hợp lệ để force log lần đầu
+  uint8_t display_counter = 0;
+  
   // Main loop
   while (1)
   {
+    // =============================================================================
+    // ĐỌC THỜI GIAN RTC - SỬ DỤNG BIẾN LOCAL
+    // =============================================================================
+    uint8_t current_gio, current_phut, current_giay, current_thu, current_ngay, current_thang, current_nam;
+    DS3231Read(&current_gio, &current_phut, &current_giay, &current_thu, &current_ngay, &current_thang, &current_nam);
+    
+    // =============================================================================
+    // XỬ LÝ CẢM BIẾN VỚI TIMESTAMP
+    // =============================================================================
+    printf("\r\n[%02d:%02d:%02d] XU LY CAM BIEN \r\n", 
+           current_gio, current_phut, current_giay);
+    
     // Xử lý tất cả cảm biến
     ProcessAllSensors();
 
-    // Hiển thị trạng thái
-    DisplaySystemStatus();
+    // Hiển thị trạng thái chi tiết (mỗi 5 lần)
+    if(++display_counter >= 5) {
+        display_counter = 0;
+        printf("\r\n=== [%02d:%02d:%02d %02d/%02d/20%02d] TRANG THAI HE THONG ===\r\n",
+               current_gio, current_phut, current_giay, current_ngay, current_thang, current_nam);
+        DisplaySystemStatus();
+    }
 
     // Lấy giá trị để điều khiển
     float nh3_ppm = GetNH3_PPM();
@@ -79,8 +126,27 @@ int main(void)
     AlarmLevel_t co2_alarm = GetCO2AlarmLevel();
     AlarmLevel_t system_alarm = GetSystemAlarmLevel();
 
-    // Logic điều khiển NH3
- // Debug thong tin
+    // =============================================================================
+    // LOG DỮ LIỆU THEO THỜI GIAN (MỖI 5 PHÚT)
+    // =============================================================================
+    // Kiểm tra nếu phút chia hết cho 5 và khác với lần log trước
+    if((current_phut % 5 == 0) && (current_phut != last_log_minute)) {
+        last_log_minute = current_phut;
+        
+        printf("\r\n=== [%02d:%02d:%02d] LOG DU LIEU CAM BIEN ===\r\n",
+               current_gio, current_phut, current_giay);
+        printf("NH3: %.1f ppm (Alarm: %d)\r\n", nh3_ppm, nh3_alarm);
+        printf("CO2: %.1f ppm (Alarm: %d)\r\n", co2_ppm, co2_alarm);
+        printf("System Status: %d | System Alarm: %d\r\n", GetSystemStatus(), system_alarm);
+        printf("Uptime: %.1f phut\r\n", HAL_GetTick() / 60000.0f);
+        printf("==============================================\r\n");
+    }
+
+    // =============================================================================
+    // LOGIC ĐIỀU KHIỂN (GỮ NGUYÊN)
+    // =============================================================================
+    
+    // Debug thong tin
     printf("DEBUG - NH3: %.1f ppm, Alarm Level: %d\r\n", nh3_ppm, nh3_alarm);
     printf("DEBUG - CO2: %.1f ppm, Alarm Level: %d\r\n", co2_ppm, co2_alarm);
     
@@ -141,25 +207,53 @@ int main(void)
       break;
     }
 
-    // TODO: Mở rộng tính năng
-    // - Lưu dữ liệu vào SD card
-    // SaveDataToSD(&g_sensor_system);
-
-    // - Gửi dữ liệu qua WiFi/Bluetooth
-    // SendDataToServer(nh3_ppm, co2_ppm, system_alarm);
-
-    // - Hiển thị trên LCD
-    // UpdateLCDDisplay(nh3_ppm, co2_ppm, system_alarm);
-
-    // - Log dữ liệu
-    // LogToFile(&g_sensor_system);
-
-    printf("\r\nCHO 60 GIAY DE DO TIEP\r\n");
+    // =============================================================================
+    // KIỂM TRA TÁC VỤ THEO LỊCH - ĐƠN GIẢN
+    // =============================================================================
     
+    // Tự động hiệu chuẩn vào 3:00 AM
+    if(current_gio == 3 && current_phut == 0 && current_giay < 5) {
+        printf("\r\n🕒 [%02d:%02d:%02d] THOI GIAN HIEU CHUAN TU DONG!\r\n", 
+               current_gio, current_phut, current_giay);
+        CalibrateSensors();
+    }
+    
+    // Báo cáo hàng ngày vào 23:59
+    if(current_gio == 23 && current_phut == 59 && current_giay < 5) {
+        printf("\r\n📊 [%02d:%02d:%02d] BAO CAO HANG NGAY\r\n", 
+               current_gio, current_phut, current_giay);
+        printf("Ngay: %02d/%02d/20%02d\r\n", current_ngay, current_thang, current_nam);
+        printf("Uptime: %.1f gio\r\n", HAL_GetTick() / 3600000.0f);
+        printf("Tong doc: %lu | Loi: %lu\r\n", g_sensor_system.total_readings, g_sensor_system.error_count);
+    }
+    
+    // Chào buổi sáng
+    if(current_gio == 6 && current_phut == 0 && current_giay < 5) {
+        printf("\r\n🌅 [%02d:%02d:%02d] CHAO BUOI SANG!\r\n", 
+               current_gio, current_phut, current_giay);
+    }
 
+    // =============================================================================
+    // MỞ RỘNG TÍNH NĂNG VỚI TIMESTAMP
+    // =============================================================================
+    
+    // TODO: Mở rộng tính năng
+    // - Lưu dữ liệu vào SD card với timestamp
+    // SaveDataToSDWithTime(nh3_ppm, co2_ppm, current_gio, current_phut, current_giay, current_ngay, current_thang, current_nam);
+
+    // - Gửi dữ liệu qua WiFi/Bluetooth với timestamp
+    // SendDataToServerWithTime(nh3_ppm, co2_ppm, system_alarm, current_gio, current_phut, current_giay);
+
+    // - Hiển thị trên LCD với thời gian
+    // UpdateLCDDisplayWithTime(nh3_ppm, co2_ppm, system_alarm, current_gio, current_phut, current_giay);
+
+    printf("\r\n[%02d:%02d:%02d] CHO %d GIAY DE DO TIEP\r\n", 
+           current_gio, current_phut, current_giay, MAIN_LOOP_DELAY/1000);
+    
     HAL_Delay(MAIN_LOOP_DELAY); // Chờ 1 phút
   }
 }
+
 
 // =============================================================================
 // SYSTEM CONFIGURATION FUNCTIONS
@@ -232,7 +326,7 @@ void Error_Handler(void)
  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
+  /* USER CODE BEGIN  */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */

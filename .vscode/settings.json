@@ -8,6 +8,8 @@
         "sensor_system.h": "c",
         "sensor_hardware.h": "c",
         "sensor_config.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "sensor_types.h": "c",
+        "adc.h": "c"
     }
 }
