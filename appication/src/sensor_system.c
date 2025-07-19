@@ -23,14 +23,14 @@ void InitSensorSystem(void) {
     
     // Khởi tạo từng cảm biến
     InitMQ137Sensor(&g_sensor_system.mq137);
-    InitMQ135Sensor(&g_sensor_system.mq135);
+    InitMQ136Sensor(&g_sensor_system.mq136);
     
     // MQ137 Digital Pin
     GPIOx_Init(MQ137_DIGITAL_PORT ,MQ137_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ; 
     // MQ135 Digital Pin
-    GPIOx_Init(MQ135_DIGITAL_PORT ,MQ135_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ;
+    GPIOx_Init(MQ136_DIGITAL_PORT ,MQ136_DIGITAL_PIN ,MODE_INPUT ,PU,0)  ;
     ADCx_Init(ADC1,MQ137_ADC_CHANNEL); // Khởi tạo ADC cho MQ137
-    ADCx_Init(ADC1,MQ135_ADC_CHANNEL); // Khởi tạo ADC cho MQ135
+    ADCx_Init(ADC1,MQ136_ADC_CHANNEL); // Khởi tạo ADC cho MQ136
     
     
     // Cập nhật trạng thái hệ thống
@@ -38,7 +38,7 @@ void InitSensorSystem(void) {
     g_sensor_system.last_update = HAL_GetTick();
     
     printf("KHOI TAO MQ137 (NH3): %s\r\n", g_sensor_system.mq137.base.is_enabled ? "OK" : "FAIL");
-    printf("KHOI TAO MQ135 (CO2): %s\r\n", g_sensor_system.mq135.base.is_enabled ? "OK" : "FAIL");
+    printf("KHOI TAO MQ136 (H2S): %s\r\n", g_sensor_system.mq136.base.is_enabled ? "OK" : "FAIL");
     printf("CAM BIEN HOAT DONG: %d/2\r\n", g_sensor_system.active_sensor_count);
     
     // Thời gian ổn định
@@ -59,8 +59,8 @@ void ProcessAllSensors(void) {
     }
         
 
-    if(g_sensor_system.mq135.base.is_enabled) {
-        ProcessGasSensor(&g_sensor_system.mq135);
+    if(g_sensor_system.mq136.base.is_enabled) {
+        ProcessGasSensor(&g_sensor_system.mq136);
     }
     // Cập nhật trạng thái hệ thống
     UpdateSystemStatus();
@@ -85,7 +85,7 @@ void DisplaySystemStatus(void) {
     PrintSensorDetails(&g_sensor_system.mq137);
     
     // Hiển thị MQ135
-    PrintSensorDetails(&g_sensor_system.mq135);
+    PrintSensorDetails(&g_sensor_system.mq136);
     
     // Trạng thái tổng thể
     printf("\r\n--- HE THONG ---\r\n");
@@ -114,7 +114,7 @@ void TestSensorSystem(void) {
         
         printf("  MQ137: %.1f ppm NH3 (Alarm: %d)\r\n", 
                GetNH3_PPM(), GetNH3AlarmLevel());
-        printf("  MQ135: %.1f ppm CO2 (Alarm: %d)\r\n", 
+        printf("  MQ136: %.1f ppm H2S (Alarm: %d)\r\n", 
                GetCO2_PPM(), GetCO2AlarmLevel());
         printf("  HE THONG: Status=%d, Alarm=%d\r\n\r\n", 
                GetSystemStatus(), GetSystemAlarmLevel());
@@ -145,7 +145,7 @@ void CalibrateSensors(void) {
     printf("Thoi gian: 5 phut (300 mau)\r\n");
     
     float mq137_r0_sum = 0, mq137_min = 999999, mq137_max = 0;
-    float mq135_r0_sum = 0, mq135_min = 999999, mq135_max = 0;
+    float mq136_r0_sum = 0, mq136_min = 999999, mq136_max = 0;
     int valid_samples = 0;
     int total_samples = 300;  // 5 phút
     
@@ -153,24 +153,24 @@ void CalibrateSensors(void) {
         ProcessAllSensors();
         
         float mq137_resistance = g_sensor_system.mq137.base.resistance;
-        float mq135_resistance = g_sensor_system.mq135.base.resistance;
+        float mq136_resistance = g_sensor_system.mq136.base.resistance;
         
         // Validate samples với điều kiện chặt chẽ hơn
         uint8_t mq137_valid = ValidateCalibrationSample(mq137_resistance, 
                                                        g_sensor_system.mq137.base.raw_voltage);
-        uint8_t mq135_valid = ValidateCalibrationSample(mq135_resistance, 
-                                                       g_sensor_system.mq135.base.raw_voltage);
+        uint8_t mq136_valid = ValidateCalibrationSample(mq136_resistance, 
+                                                       g_sensor_system.mq136.base.raw_voltage);
         
-        if(mq137_valid && mq135_valid) {
+        if(mq137_valid && mq136_valid) {
             // MQ137 statistics
             mq137_r0_sum += mq137_resistance;
             if(mq137_resistance < mq137_min) mq137_min = mq137_resistance;
             if(mq137_resistance > mq137_max) mq137_max = mq137_resistance;
             
             // MQ135 statistics
-            mq135_r0_sum += mq135_resistance;
-            if(mq135_resistance < mq135_min) mq135_min = mq135_resistance;
-            if(mq135_resistance > mq135_max) mq135_max = mq135_resistance;
+            mq136_r0_sum += mq136_resistance;
+            if(mq136_resistance < mq136_min) mq136_min = mq136_resistance;
+            if(mq136_resistance > mq136_max) mq136_max = mq136_resistance;
             
             valid_samples++;
         }
@@ -178,8 +178,8 @@ void CalibrateSensors(void) {
         // Progress report mỗi 30 giây
         if(i % 30 == 0) {
             float progress = (float)i / total_samples * 100.0f;
-            printf("Tien do: %.1f%% | Mau %d: MQ137=%.1fΩ, MQ135=%.1fΩ | Valid: %d\r\n", 
-                   progress, i+1, mq137_resistance, mq135_resistance, valid_samples);
+            printf("Tien do: %.1f%% | Mau %d: MQ137=%.1fΩ, MQ136=%.1fΩ | Valid: %d\r\n", 
+                   progress, i+1, mq137_resistance, mq136_resistance, valid_samples);
         }
         
         HAL_Delay(1000);  // 1 giây mỗi sample
@@ -198,13 +198,13 @@ void CalibrateSensors(void) {
     
     // Tính giá trị trung bình
     float mq137_r0_avg = mq137_r0_sum / valid_samples;
-    float mq135_r0_avg = mq135_r0_sum / valid_samples;
+    float mq136_r0_avg = mq136_r0_sum / valid_samples;
     
     // Tính độ ổn định
     float mq137_range = mq137_max - mq137_min;
-    float mq135_range = mq135_max - mq135_min;
+    float mq136_range = mq136_max - mq136_min;
     float mq137_stability = (mq137_range / mq137_r0_avg) * 100.0f;
-    float mq135_stability = (mq135_range / mq135_r0_avg) * 100.0f;
+    float mq136_stability = (mq136_range / mq136_r0_avg) * 100.0f;
     
     printf("\r\n=== KET QUA HIEU CHUAN ===\r\n");
     printf("Thoi gian: 5 phut | Sample hop le: %d/%d (%.1f%%)\r\n", 
@@ -217,27 +217,27 @@ void CalibrateSensors(void) {
     printf("Do on dinh: %.1f%%\r\n", mq137_stability);
     
     // MQ135 results  
-    printf("\r\n--- MQ135 (CO2) ---\r\n");
-    printf("R0 trung binh: %.1f Ω\r\n", mq135_r0_avg);
-    printf("Khoang bien thien: %.1f - %.1f Ω\r\n", mq135_min, mq135_max);
-    printf("Do on dinh: %.1f%%\r\n", mq135_stability);
+    printf("\r\n--- MQ136 (H2S) ---\r\n");
+    printf("R0 trung binh: %.1f Ω\r\n", mq136_r0_avg);
+    printf("Khoang bien thien: %.1f - %.1f Ω\r\n", mq136_min, mq136_max);
+    printf("Do on dinh: %.1f%%\r\n", mq136_stability);
     
     // Validate và apply R0 values
     uint8_t mq137_r0_valid = ValidateR0Value(mq137_r0_avg, mq137_stability, "MQ137");
-    uint8_t mq135_r0_valid = ValidateR0Value(mq135_r0_avg, mq135_stability, "MQ135");
+    uint8_t mq136_r0_valid = ValidateR0Value(mq136_r0_avg, mq136_stability, "MQ136");
     
-    if(mq137_r0_valid && mq135_r0_valid) {
+    if(mq137_r0_valid && mq136_r0_valid) {
         // Cập nhật giá trị R0
         g_sensor_system.mq137.base.r0_value = mq137_r0_avg;
-        g_sensor_system.mq135.base.r0_value = mq135_r0_avg;
+        g_sensor_system.mq136.base.r0_value = mq136_r0_avg;
         
         printf("\r\n✅ HIEU CHUAN THANH CONG!\r\n");
         printf("R0 da duoc cap nhat:\r\n");
         printf("- MQ137: %.1f Ω\r\n", mq137_r0_avg);
-        printf("- MQ135: %.1f Ω\r\n", mq135_r0_avg);
+        printf("- MQ136: %.1f Ω\r\n", mq136_r0_avg);
         
         // Lưu vào Flash (optional)
-        SaveCalibrationToFlash(mq137_r0_avg, mq135_r0_avg);
+        SaveCalibrationToFlash(mq137_r0_avg, mq136_r0_avg);
         
         // Test ngay với R0 mới
         printf("\r\n🧪 TEST VOI R0 MOI:\r\n");
@@ -247,7 +247,7 @@ void CalibrateSensors(void) {
         printf("\r\n❌ HIEU CHUAN THAT BAI!\r\n");
         printf("Su dung gia tri R0 mac dinh\r\n");
         g_sensor_system.mq137.base.r0_value = 10000.0f;
-        g_sensor_system.mq135.base.r0_value = 10000.0f;
+        g_sensor_system.mq136.base.r0_value = 10000.0f;
     }
     
     printf("===============================\r\n");
@@ -261,44 +261,44 @@ uint8_t CheckCalibrationConditions(void) {
     printf("Kiem tra dieu kien hieu chuan...\r\n");
     
     // Kiểm tra 10 sample để đánh giá ổn định
-    float mq137_readings[10], mq135_readings[10];
+    float mq137_readings[10], mq136_readings[10];
     
     for(int i = 0; i < 10; i++) {
         ProcessAllSensors();
         mq137_readings[i] = g_sensor_system.mq137.base.resistance;
-        mq135_readings[i] = g_sensor_system.mq135.base.resistance;
+        mq136_readings[i] = g_sensor_system.mq136.base.resistance;
         HAL_Delay(2000);  // 2 giây mỗi sample
     }
     
     // Tính coefficient of variation
     float mq137_cv = CalculateCV(mq137_readings, 10);
-    float mq135_cv = CalculateCV(mq135_readings, 10);
+    float mq136_cv = CalculateCV(mq136_readings, 10);
     
     printf("Do on dinh MQ137: %.1f%% (can <10%%)\r\n", mq137_cv);
-    printf("Do on dinh MQ135: %.1f%% (can <10%%)\r\n", mq135_cv);
+    printf("Do on dinh MQ136: %.1f%% (can <10%%)\r\n", mq136_cv);
     
     // Kiểm tra range hợp lý
     float mq137_avg = CalculateAverage(mq137_readings, 10);
-    float mq135_avg = CalculateAverage(mq135_readings, 10);
+    float mq136_avg = CalculateAverage(mq136_readings, 10);
     
     printf("Dien tro trung binh MQ137: %.1f Ω\r\n", mq137_avg);
-    printf("Dien tro trung binh MQ135: %.1f Ω\r\n", mq135_avg);
+    printf("Dien tro trung binh MQ136: %.1f Ω\r\n", mq136_avg);
     
     // Điều kiện pass
-    if(mq137_cv < 10.0f && mq135_cv < 10.0f && 
+    if(mq137_cv < 10.0f && mq136_cv < 10.0f && 
        mq137_avg > 10000.0f && mq137_avg < 200000.0f &&
-       mq135_avg > 10000.0f && mq135_avg < 200000.0f) {
+       mq136_avg > 10000.0f && mq136_avg < 200000.0f) {
         printf("✅ Dieu kien dat yeu cau\r\n");
         return 1;
     } else {
         printf("❌ Dieu kien chua dat yeu cau\r\n");
         if(mq137_cv >= 10.0f) printf("- MQ137 chua on dinh\r\n");
-        if(mq135_cv >= 10.0f) printf("- MQ135 chua on dinh\r\n");
+        if(mq136_cv >= 10.0f) printf("- MQ136 chua on dinh\r\n");
         if(mq137_avg <= 10000.0f || mq137_avg >= 200000.0f) {
             printf("- MQ137 dien tro bat thuong\r\n");
         }
-        if(mq135_avg <= 10000.0f || mq135_avg >= 200000.0f) {
-            printf("- MQ135 dien tro bat thuong\r\n");
+        if(mq136_avg <= 10000.0f || mq136_avg >= 200000.0f) {
+            printf("- MQ136 dien tro bat thuong\r\n");
         }
         return 0;
     }
@@ -372,17 +372,17 @@ void TestCalibrationResult(void) {
         ProcessAllSensors();
         
         float nh3_ppm = GetNH3_PPM();
-        float co2_ppm = GetCO2_PPM();
+        float h2s_ppm = GetH2S_PPM();
         
-        printf("Test %d: NH3=%.1f ppm, CO2=%.1f ppm\r\n", i+1, nh3_ppm, co2_ppm);
+        printf("Test %d: NH3=%.1f ppm, H2S=%.1f ppm\r\n", i+1, nh3_ppm, h2s_ppm);
         
         HAL_Delay(3000);
     }
 }
 
-void SaveCalibrationToFlash(float mq137_r0, float mq135_r0) {
+void SaveCalibrationToFlash(float mq137_r0, float mq136_r0) {
     // TODO: Implement Flash save
-    printf("💾 Luu R0 vao Flash: MQ137=%.1f, MQ135=%.1f\r\n", mq137_r0, mq135_r0);
+    printf("💾 Luu R0 vao Flash: MQ137=%.1f, MQ136=%.1f\r\n", mq137_r0, mq136_r0);
 }
 
 // =============================================================================
@@ -394,39 +394,39 @@ void QuickCalibrateSensors(void) {
     printf("CHI DE TEST - KHONG CHINH XAC!\r\n");
     
     float mq137_r0_sum = 0;
-    float mq135_r0_sum = 0;
+    float mq136_r0_sum = 0;
     int valid_samples = 0;
     
     for(int i = 0; i < 30; i++) {
         ProcessAllSensors();
         
-        if(g_sensor_system.mq137.base.is_valid && g_sensor_system.mq135.base.is_valid) {
+        if(g_sensor_system.mq137.base.is_valid && g_sensor_system.mq136.base.is_valid) {
             mq137_r0_sum += g_sensor_system.mq137.base.resistance;
-            mq135_r0_sum += g_sensor_system.mq135.base.resistance;
+            mq136_r0_sum += g_sensor_system.mq136.base.resistance;
             valid_samples++;
         }
         
-        printf("Mau %d: MQ137=%.1fΩ, MQ135=%.1fΩ\r\n", 
-               i+1, g_sensor_system.mq137.base.resistance, g_sensor_system.mq135.base.resistance);
+        printf("Mau %d: MQ137=%.1fΩ, MQ136=%.1fΩ\r\n", 
+               i+1, g_sensor_system.mq137.base.resistance, g_sensor_system.mq136.base.resistance);
         
         HAL_Delay(1000);
     }
     
     if(valid_samples > 15) {  // Cần ít nhất 50% sample
         float mq137_r0_avg = mq137_r0_sum / valid_samples;
-        float mq135_r0_avg = mq135_r0_sum / valid_samples;
+        float mq136_r0_avg = mq136_r0_sum / valid_samples;
         
         // Chỉ apply nếu hợp lý
         if(mq137_r0_avg > 8000.0f && mq137_r0_avg < 200000.0f) {
             g_sensor_system.mq137.base.r0_value = mq137_r0_avg;
         }
-        if(mq135_r0_avg > 8000.0f && mq135_r0_avg < 200000.0f) {
-            g_sensor_system.mq135.base.r0_value = mq135_r0_avg;
+        if(mq136_r0_avg > 8000.0f && mq136_r0_avg < 200000.0f) {
+            g_sensor_system.mq136.base.r0_value = mq136_r0_avg;
         }
         
         printf("\r\nKET QUA HIEU CHUAN NHANH:\r\n");
         printf("MQ137 R0: %.1f Ω\r\n", g_sensor_system.mq137.base.r0_value);
-        printf("MQ135 R0: %.1f Ω\r\n", g_sensor_system.mq135.base.r0_value);
+        printf("MQ136 R0: %.1f Ω\r\n", g_sensor_system.mq136.base.r0_value);
         printf("Mau hop le: %d/30\r\n", valid_samples);
         printf("✅ HOAN TAT\r\n");
     } else {
@@ -438,7 +438,7 @@ void QuickCalibrateSensors(void) {
 // MANUAL R0 SETTING
 // =============================================================================
 
-void SetManualR0(float mq137_r0, float mq135_r0) {
+void SetManualR0(float mq137_r0, float mq136_r0) {
     printf("\r\nTHIET LAP R0 THU CONG:\r\n");
     
     if(mq137_r0 > 5000.0f && mq137_r0 < 300000.0f) {
@@ -448,11 +448,11 @@ void SetManualR0(float mq137_r0, float mq135_r0) {
         printf("❌ MQ137 R0 khong hop le\r\n");
     }
     
-    if(mq135_r0 > 5000.0f && mq135_r0 < 300000.0f) {
-        g_sensor_system.mq135.base.r0_value = mq135_r0;
-        printf("✅ MQ135 R0 = %.1f Ω\r\n", mq135_r0);
+    if(mq136_r0 > 5000.0f && mq136_r0 < 300000.0f) {
+        g_sensor_system.mq136.base.r0_value = mq136_r0;
+        printf("✅ MQ136 R0 = %.1f Ω\r\n", mq136_r0);
     } else {
-        printf("❌ MQ135 R0 khong hop le\r\n");
+        printf("❌ MQ136 R0 khong hop le\r\n");
     }
 }
 
@@ -474,8 +474,8 @@ float GetNH3_PPM(void) {
 /**
  * @brief Lấy nồng độ CO2 hiện tại
  */
-float GetCO2_PPM(void) {
-    return g_sensor_system.mq135.base.is_valid ? g_sensor_system.mq135.gas_ppm : 0.0f;
+float GetH2S_PPM(void) {
+    return g_sensor_system.mq136.base.is_valid ? g_sensor_system.mq136.gas_ppm : 0.0f;
 }
 
 /**
@@ -488,8 +488,8 @@ AlarmLevel_t GetNH3AlarmLevel(void) {
 /**
  * @brief Lấy mức cảnh báo CO2
  */
-AlarmLevel_t GetCO2AlarmLevel(void) {
-    return g_sensor_system.mq135.alarm_level;
+AlarmLevel_t GetH2SAlarmLevel(void) {
+    return g_sensor_system.mq136.alarm_level;
 }
 
 /**
@@ -528,10 +528,10 @@ void UpdateSystemStatus(void) {
         }
     }
     
-    if(g_sensor_system.mq135.base.is_enabled && g_sensor_system.mq135.base.is_valid) {
+    if(g_sensor_system.mq136.base.is_enabled && g_sensor_system.mq136.base.is_valid) {
         valid_sensors++;
-        if(g_sensor_system.mq135.alarm_level > max_alarm) {
-            max_alarm = g_sensor_system.mq135.alarm_level;
+        if(g_sensor_system.mq136.alarm_level > max_alarm) {
+            max_alarm = g_sensor_system.mq136.alarm_level;
         }
     }
     

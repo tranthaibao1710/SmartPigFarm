@@ -17,7 +17,7 @@
 
 // Function prototypes
 void InitMQ137Sensor(GasSensor_t* sensor);
-void InitMQ135Sensor(GasSensor_t* sensor);
+void InitMQ136Sensor(GasSensor_t* sensor);
 void ProcessGasSensor(GasSensor_t* sensor);
 uint8_t ValidateGasSensor(GasSensor_t* sensor);
 void UpdateAlarmLevel(GasSensor_t* sensor);

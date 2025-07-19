@@ -47,8 +47,8 @@ int main(void)
   USARTx_Init(USART1, PA9PA10, 115200);
 
   // Display welcome message
-  printf("HE THONG GIAM SAT KHI NH3 & CO2\n");
-  printf("CAM BIEN: MQ137 + MQ135 + RTC DS3231\r\n");
+  printf("HE THONG GIAM SAT KHI NH3 & H2S\n");
+  printf("CAM BIEN: MQ137 + MQ136 + RTC DS3231\r\n");
  
   // =============================================================================
   // KHỞI TẠO RTC DS3231 - ĐơN GIẢN
@@ -79,11 +79,11 @@ int main(void)
   InitSensorSystem();
 
   // Test hệ thống
-  TestSensorSystem();
+  //TestSensorSystem();
 
   // Hiệu chuẩn nếu cần (uncomment để chạy)
   //CalibrateSensors();
-  SetManualR0(25000, 115000); // Set R0 cho MQ137 & MQ135
+  SetManualR0(26000, 10000); // Set R0 cho MQ137 & MQ135
   printf("\r\n BAT DAU GIAM SAT\r\n");
   printf("Press any key to stop...\r\n");
 
@@ -121,9 +121,9 @@ int main(void)
 
     // Lấy giá trị để điều khiển
     float nh3_ppm = GetNH3_PPM();
-    float co2_ppm = GetCO2_PPM();
+    float h2s_ppm = GetH2S_PPM();
     AlarmLevel_t nh3_alarm = GetNH3AlarmLevel();
-    AlarmLevel_t co2_alarm = GetCO2AlarmLevel();
+    AlarmLevel_t h2s_alarm = GetH2SAlarmLevel();
     AlarmLevel_t system_alarm = GetSystemAlarmLevel();
 
     // =============================================================================
@@ -136,7 +136,7 @@ int main(void)
         printf("\r\n=== [%02d:%02d:%02d] LOG DU LIEU CAM BIEN ===\r\n",
                current_gio, current_phut, current_giay);
         printf("NH3: %.1f ppm (Alarm: %d)\r\n", nh3_ppm, nh3_alarm);
-        printf("CO2: %.1f ppm (Alarm: %d)\r\n", co2_ppm, co2_alarm);
+        printf("H2S: %.1f ppm (Alarm: %d)\r\n", h2s_ppm, h2s_alarm);
         printf("System Status: %d | System Alarm: %d\r\n", GetSystemStatus(), system_alarm);
         printf("Uptime: %.1f phut\r\n", HAL_GetTick() / 60000.0f);
         printf("==============================================\r\n");
@@ -148,7 +148,7 @@ int main(void)
     
     // Debug thong tin
     printf("DEBUG - NH3: %.1f ppm, Alarm Level: %d\r\n", nh3_ppm, nh3_alarm);
-    printf("DEBUG - CO2: %.1f ppm, Alarm Level: %d\r\n", co2_ppm, co2_alarm);
+    printf("DEBUG - H2S: %.1f ppm, Alarm Level: %d\r\n", h2s_ppm, h2s_alarm);
     
     // Logic dieu khien NH3 - day du tat ca truong hop
     printf("\r\nNH3 STATUS: ");
@@ -170,21 +170,21 @@ int main(void)
     }
     
     // Logic dieu khien CO2 - day du tat ca truong hop
-    printf("CO2 STATUS: ");
-    if(co2_alarm == ALARM_DANGER) {
-        printf("CO2 = %.1f ppm - NGUY HIEM! CAN THONG GIO NGAY!\r\n", co2_ppm);
+    printf("H2S STATUS: ");
+    if(h2s_alarm == ALARM_DANGER) {
+        printf("H2S = %.1f ppm - NGUY HIEM! CAN THONG GIO NGAY!\r\n", h2s_ppm);
         // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_SET);
     }
-    else if(co2_alarm == ALARM_HIGH) {
-        printf("CO2 = %.1f ppm - BAT QUAT THONG GIO!\r\n", co2_ppm);
+    else if(h2s_alarm == ALARM_HIGH) {
+        printf("H2S = %.1f ppm - BAT QUAT THONG GIO!\r\n", h2s_ppm);
         // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_SET);
     }
-    else if(co2_alarm == ALARM_LOW) {
-        printf("CO2 = %.1f ppm - Canh bao thap\r\n", co2_ppm);
+    else if(h2s_alarm == ALARM_LOW) {
+        printf("H2S = %.1f ppm - Canh bao thap\r\n", h2s_ppm);
         // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_RESET);
     }
     else { // ALARM_NORMAL
-        printf("CO2 = %.1f ppm - Binh thuong\r\n", co2_ppm);
+        printf("H2S = %.1f ppm - Binh thuong\r\n", h2s_ppm);
         // HAL_GPIO_WritePin(FAN_CO2_PORT, FAN_CO2_PIN, GPIO_PIN_RESET);
     }
 

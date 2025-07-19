@@ -75,19 +75,24 @@ uint16_t ADCx_Read(ADC_TypeDef *ADCx, uint8_t Channel) {
     return ADCx->DR;
 }
 
-// ✅ Sửa lỗi overflow và kiểu dữ liệu
 uint16_t ADCx_Read_TB(ADC_TypeDef *ADCx, uint8_t Channel, uint8_t n) {
     if(n == 0) return 0;            // Validation
     
-    uint32_t sum = 0;               // ✅ Dùng uint32_t thay vì uint8_t
+    uint32_t sum = 0;               // Dùng uint32_t d? tránh overflow
     
-    for(int i = 0; i < n; i++) {
-        sum += ADCx_Read(ADCx, Channel);
-        // Có thể thêm delay nhỏ giữa các lần đọc nếu cần
-        // for(volatile int d = 0; d < 1000; d++);
+    // ? Lo?i b? m?t s? m?u d?u d? ADC ?n d?nh
+    for(int i = 0; i < 3; i++) {
+        ADCx_Read(ADCx, Channel);
+        for(volatile int d = 0; d < 500; d++); // Delay
     }
     
-    return (uint16_t)(sum / n);     // Ép kiểu an toàn
+    // Ð?c n m?u
+    for (int i = 0; i < n; i++) {
+        sum += ADCx_Read(ADCx, Channel);
+        for (volatile int d = 0; d < 1000; d++); // Delay gi?a các l?n d?c
+    }
+    
+    return (uint16_t)(sum / n);     // Tr? v? trung bình
 }
 
 // ✅ Hàm đọc điện áp đã sửa

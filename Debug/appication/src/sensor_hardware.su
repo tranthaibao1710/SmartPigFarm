@@ -1,5 +1,5 @@
-../appication/src/sensor_hardware.c:8:7:ReadADC_Voltage	32	static
-../appication/src/sensor_hardware.c:23:9:ReadDigitalState	16	static
-../appication/src/sensor_hardware.c:30:7:CalculateResistance	16	static
-../appication/src/sensor_hardware.c:42:7:CalculateGasPPM	24	static
-../appication/src/sensor_hardware.c:50:14:DetermineAlarmLevel	24	static
+../appication/src/sensor_hardware.c:8:7:ReadADC_Voltage	24	static
+../appication/src/sensor_hardware.c:22:9:ReadDigitalState	16	static
+../appication/src/sensor_hardware.c:29:7:CalculateResistance	16	static
+../appication/src/sensor_hardware.c:41:7:CalculateGasPPM	40	static
+../appication/src/sensor_hardware.c:53:14:DetermineAlarmLevel	24	static

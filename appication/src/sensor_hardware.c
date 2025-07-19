@@ -13,9 +13,8 @@ float ReadADC_Voltage(uint32_t channel) {
     float adc_voltage = adc_avg * ADC_VREF / ADC_RESOLUTION;
     
     // Hiệu chỉnh cho mạch chia áp để có điện áp thực của cảm biến
-    float sensor_voltage = adc_voltage / VOLTAGE_DIVIDER_RATIO;
     
-    return sensor_voltage;
+    return adc_voltage;
 }
 /**
  * @brief Đọc trạng thái digital
@@ -40,8 +39,12 @@ float CalculateResistance(float voltage) {
  * @brief Tính nồng độ khí từ tỷ lệ Rs/R0
  */
 float CalculateGasPPM(float rs_r0_ratio, float curve_a, float curve_b) {
-    if(rs_r0_ratio <= 0) return 0.0f;
-    return curve_a * powf(rs_r0_ratio, curve_b);
+    if (rs_r0_ratio <= 0.0f) return 0.0f;
+
+    float log_ratio = log10f(rs_r0_ratio);                          // log10(Rs/R0)
+    float log_ppm   = (log_ratio - curve_b) / curve_a;             // log10(ppm)
+    float ppm       = powf(10.0f, log_ppm);                         // ppm = 10^log_ppm
+    return ppm;
 }
 
 /**

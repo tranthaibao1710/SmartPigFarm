@@ -27,8 +27,8 @@ void InitMQ137Sensor(GasSensor_t* sensor) {
     sensor->threshold_danger = 50.0f;
     
     // Thông số đặc tuyến MQ137 cho NH3
-    sensor->curve_a = 102.2f;
-    sensor->curve_b = -2.473f;
+    sensor->curve_a = -0.263f;
+    sensor->curve_b = 0.42f;
     sensor->min_ppm = 0.0f;
     sensor->max_ppm = 500.0f;
     
@@ -37,34 +37,34 @@ void InitMQ137Sensor(GasSensor_t* sensor) {
 }
 
 /**
- * @brief Khởi tạo cảm biến MQ135 (CO2)
+ * @brief Khởi tạo cảm biến MQ136 (H2S)
  */
-void InitMQ135Sensor(GasSensor_t* sensor) {
+void InitMQ136Sensor(GasSensor_t* sensor) {
     // Cấu hình base sensor
     sensor->base.sensor_id = 1;
-    sensor->base.sensor_type = SENSOR_TYPE_MQ135;
-    strcpy(sensor->base.sensor_name, "MQ135");
+    sensor->base.sensor_type = SENSOR_TYPE_MQ136;
+    strcpy(sensor->base.sensor_name, "MQ136");
     sensor->base.is_enabled = 1;
-    sensor->base.adc_channel = MQ135_ADC_CHANNEL;
-    sensor->base.digital_port = MQ135_DIGITAL_PORT;
-    sensor->base.digital_pin = MQ135_DIGITAL_PIN;
+    sensor->base.adc_channel = MQ136_ADC_CHANNEL;
+    sensor->base.digital_port = MQ136_DIGITAL_PORT;
+    sensor->base.digital_pin = MQ136_DIGITAL_PIN;
     sensor->base.r0_value = 10000.0f; // Giá trị mặc định, cần hiệu chuẩn
     
     // Cấu hình gas sensor
-    sensor->gas_type = GAS_TYPE_CO2;
-    strcpy(sensor->gas_name, "CO2");
+    sensor->gas_type = GAS_TYPE_H2S;
+    strcpy(sensor->gas_name, "H2S");
     strcpy(sensor->unit, "ppm");
     
     // Ngưỡng cảnh báo CO2
-    sensor->threshold_low = 800.0f;
-    sensor->threshold_high = 1200.0f;
-    sensor->threshold_danger = 2000.0f;
+    sensor->threshold_low = MQ136_THRESHOLD_LOW;
+    sensor->threshold_high = MQ136_THRESHOLD_HIGH;
+    sensor->threshold_danger = MQ136_THRESHOLD_DANGER;
     
     // Thông số đặc tuyến MQ135 cho CO2
-    sensor->curve_a = 116.6f;
-    sensor->curve_b = -2.769f;
-    sensor->min_ppm = 300.0f;
-    sensor->max_ppm = 5000.0f;
+    sensor->curve_a = MQ136_CURVE_A;
+    sensor->curve_b = MQ136_CURVE_B;
+    sensor->min_ppm = MQ136_MIN_PPM;
+    sensor->max_ppm = MQ136_MAX_PPM;
     
     // Khởi tạo giá trị
     sensor->alarm_level = ALARM_NORMAL;
@@ -132,7 +132,7 @@ uint8_t ValidateGasSensor(GasSensor_t* sensor) {
  * @brief Cập nhật mức cảnh báo cho cảm biến
  */
 void UpdateAlarmLevel(GasSensor_t* sensor) {
-    sensor->alarm_level = DetermineAlarmLevel(sensor->filtered_ppm, 
+    sensor->alarm_level = DetermineAlarmLevel(sensor->gas_ppm, 
                                             sensor->threshold_low,
                                             sensor->threshold_high, 
                                             sensor->threshold_danger);

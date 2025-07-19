@@ -19,7 +19,7 @@
  */
 typedef enum {
     SENSOR_TYPE_MQ137 = 0,  // NH3 Sensor
-    SENSOR_TYPE_MQ135       // Multi-gas Sensor (CO2)
+    SENSOR_TYPE_MQ136       // Multi-gas Sensor (h2s)
 } SensorType_t;
 
 /**
@@ -27,7 +27,7 @@ typedef enum {
  */
 typedef enum {
     GAS_TYPE_NH3 = 0,
-    GAS_TYPE_CO2
+    GAS_TYPE_H2S,  // Hydrogen Sulfide
 } GasType_t;
 
 /**
@@ -114,7 +114,7 @@ typedef struct {
 typedef struct {
     // Cảm biến cụ thể
     GasSensor_t mq137;             // Cảm biến MQ137 (NH3)
-    GasSensor_t mq135;             // Cảm biến MQ135 (CO2)
+    GasSensor_t mq136;             // Cảm biến MQ136 (h2s)
 
     // Trạng thái hệ thống
     uint8_t active_sensor_count;    // Số cảm biến đang hoạt động

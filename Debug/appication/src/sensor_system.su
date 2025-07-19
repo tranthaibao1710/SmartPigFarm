@@ -13,9 +13,9 @@
 ../appication/src/sensor_system.c:392:6:QuickCalibrateSensors	56	static
 ../appication/src/sensor_system.c:441:6:SetManualR0	16	static
 ../appication/src/sensor_system.c:470:7:GetNH3_PPM	4	static
-../appication/src/sensor_system.c:477:7:GetCO2_PPM	4	static
+../appication/src/sensor_system.c:477:7:GetH2S_PPM	4	static
 ../appication/src/sensor_system.c:484:14:GetNH3AlarmLevel	4	static
-../appication/src/sensor_system.c:491:14:GetCO2AlarmLevel	4	static
+../appication/src/sensor_system.c:491:14:GetH2SAlarmLevel	4	static
 ../appication/src/sensor_system.c:498:14:GetSystemAlarmLevel	4	static
 ../appication/src/sensor_system.c:505:9:GetSystemStatus	4	static
 ../appication/src/sensor_system.c:511:6:SaveToHistory	8	static

@@ -25,14 +25,14 @@
  */
 
 // Cấu hình chân MQ137 (NH3)
-#define MQ137_ADC_CHANNEL   ADC_Channel_0
+#define MQ137_ADC_CHANNEL   ADC_Channel_8
 #define MQ137_DIGITAL_PORT  GPIOA
 #define MQ137_DIGITAL_PIN   GPIO_PIN_3
 
 // Cấu hình chân MQ135 (CO2)
-#define MQ135_ADC_CHANNEL   ADC_Channel_1
-#define MQ135_DIGITAL_PORT  GPIOA
-#define MQ135_DIGITAL_PIN   GPIO_PIN_4
+#define MQ136_ADC_CHANNEL   ADC_Channel_9
+#define MQ136_DIGITAL_PORT  GPIOA
+#define MQ136_DIGITAL_PIN   GPIO_PIN_4
 
 // =============================================================================
 // CẤU HÌNH ADC VÀ MẠCH CHIA ÁP
@@ -46,7 +46,7 @@
 
 #define ADC_VREF            3.3f    // Điện áp tham chiếu ADC (V)
 #define ADC_RESOLUTION      4095    // 12-bit ADC
-#define SENSOR_VCC          5.0f    // Điện áp cấp cho cảm biến (V)
+#define SENSOR_VCC          3.3f    // Điện áp cấp cho cảm biến (V)
 #define VOLTAGE_DIVIDER_RATIO 0.66f // Tỷ lệ chia áp (3.3V/5V)
 #define LOAD_RESISTANCE     10000.0f // Điện trở tải (Ω)
 
@@ -60,8 +60,8 @@
 #define MQ137_THRESHOLD_DANGER  50.0f
 
 // Thông số đặc tuyến MQ137 cho NH3
-#define MQ137_CURVE_A           102.2f
-#define MQ137_CURVE_B           -2.473f
+#define MQ137_CURVE_A           -0.263f
+#define MQ137_CURVE_B           0.42f
 #define MQ137_MIN_PPM           0.0f
 #define MQ137_MAX_PPM           500.0f
 
@@ -72,19 +72,20 @@
 // CẤU HÌNH CẢM BIẾN MQ135 (CO2)
 // =============================================================================
 
-// Ngưỡng cảnh báo CO2 (ppm)
-#define MQ135_THRESHOLD_LOW     800.0f
-#define MQ135_THRESHOLD_HIGH    1200.0f
-#define MQ135_THRESHOLD_DANGER  2000.0f
+// Ngưỡng cảnh báo H₂S (ppm)
+#define MQ136_THRESHOLD_LOW     5.0f
+#define MQ136_THRESHOLD_HIGH    10.0f
+#define MQ136_THRESHOLD_DANGER  20.0f
 
-// Thông số đặc tuyến MQ135 cho CO2
-#define MQ135_CURVE_A           116.6f
-#define MQ135_CURVE_B           -2.769f
-#define MQ135_MIN_PPM           300.0f
-#define MQ135_MAX_PPM           5000.0f
+// Đặc tuyến MQ136 cho khí H₂S (log-log)
+#define MQ136_CURVE_A           -0.25f
+#define MQ136_CURVE_B           -0.24f
+#define MQ136_MIN_PPM           1.0f
+#define MQ136_MAX_PPM           100.0f
 
-// Giá trị R0 mặc định (cần hiệu chuẩn)
-#define MQ135_R0_DEFAULT        10000.0f
+// Giá trị R0 mặc định (hiệu chuẩn)
+#define MQ136_R0_DEFAULT        10000.0f
+
 
 // =============================================================================
 // CẤU HÌNH HỆ THỐNG
