@@ -34,7 +34,7 @@
  *	6					PA6		PA6		PF8
  *	7					PA7		PA7		PF9
  *	8					PB0		PB0		PF10
- *	9					pB1		PB1		PF3
+ *	9					PB1		PB1		PF3
  *	10				    PC0		PC0		PC0
  *	11					PC1		PC1		PC1
  *	12					PC2		PC2		PC2

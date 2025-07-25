@@ -14,6 +14,8 @@ void ADCx_Init(ADC_TypeDef *ADCx, uint8_t Channel) {
     if(Channel == ADC_Channel_5) GPIOx_Init(GPIOA, 5, INPUT_ANALOG, NOPULL, 0);
     if(Channel == ADC_Channel_6) GPIOx_Init(GPIOA, 6, INPUT_ANALOG, NOPULL, 0);
     if(Channel == ADC_Channel_7) GPIOx_Init(GPIOA, 7, INPUT_ANALOG, NOPULL, 0);
+    if(Channel == ADC_Channel_8) GPIOx_Init(GPIOB ,0 ,INPUT_ANALOG,NOPULL,0);
+	if(Channel == ADC_Channel_9) GPIOx_Init(GPIOB ,1 ,INPUT_ANALOG,NOPULL,0);
     
     // ADC Configuration
     ADCx->CR1 |= 1<<8;              // SCAN MODE enable

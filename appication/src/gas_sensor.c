@@ -22,9 +22,9 @@ void InitMQ137Sensor(GasSensor_t* sensor) {
     strcpy(sensor->unit, "ppm");
     
     // Ngưỡng cảnh báo NH3
-    sensor->threshold_low = 15.0f;
-    sensor->threshold_high = 25.0f;
-    sensor->threshold_danger = 50.0f;
+    sensor->threshold_low = MQ137_THRESHOLD_LOW;
+    sensor->threshold_high = MQ137_THRESHOLD_HIGH;
+    sensor->threshold_danger = MQ137_THRESHOLD_DANGER;
     
     // Thông số đặc tuyến MQ137 cho NH3
     sensor->curve_a = -0.263f;

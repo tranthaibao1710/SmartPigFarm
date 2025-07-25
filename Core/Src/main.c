@@ -61,7 +61,7 @@ int main(void)
   
   // Thiết lập thời gian ban đầu (chỉ chạy 1 lần khi cần)
   // Uncomment dòng dưới để set thời gian:
-   DS3231Set(0, 18, 0, 7, 12, 7, 25);  // 17:15:00, Thứ 6, 11/07/2025
+  // DS3231Set(0, 18, 0, 7, 12, 7, 25);  // 17:15:00, Thứ 6, 11/07/2025
   
   // Test đọc thời gian với biến local
   uint8_t test_gio, test_phut, test_giay, test_thu, test_ngay, test_thang, test_nam;
@@ -83,7 +83,7 @@ int main(void)
 
   // Hiệu chuẩn nếu cần (uncomment để chạy)
   //CalibrateSensors();
-  SetManualR0(26000, 10000); // Set R0 cho MQ137 & MQ135
+  SetManualR0(26000, 37000); // Set R0 cho MQ137 & MQ136
   printf("\r\n BAT DAU GIAM SAT\r\n");
   printf("Press any key to stop...\r\n");
 
@@ -92,7 +92,9 @@ int main(void)
   // =============================================================================
   uint32_t last_log_minute = 255; // Giá trị ban đầu không hợp lệ để force log lần đầu
   uint8_t display_counter = 0;
-  
+  GPIOx_Init(GPIOB,3 , OUTPUT_PP ,NOPULL, MODE_OUTPUT_50MHZ);
+ 
+  // Bật LED báo hiệu hệ thống đã sẵn sàng
   // Main loop
   while (1)
   {
@@ -158,7 +160,7 @@ int main(void)
     }
     else if(nh3_alarm == ALARM_HIGH) {
         printf("NH3 = %.1f ppm - BAT QUAT THONG GIO!\r\n", nh3_ppm);
-        // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
+        GPIOx_WritePin(GPIOB ,3 ,1); //  HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
     }
     else if(nh3_alarm == ALARM_LOW) {
         printf("NH3 = %.1f ppm - Canh bao thap\r\n", nh3_ppm);

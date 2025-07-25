@@ -7,13 +7,11 @@
 #include "sensor_hardware.h"
 float ReadADC_Voltage(uint32_t channel) {
     // Đọc giá trị ADC trung bình
-    float adc_avg = ADCx_Read_TB(ADC1, channel, 10);
+    float adc_avg = ADCx_Read_TB(ADC1, channel, 10)-150;
     
     // Chuyển đổi giá trị ADC sang điện áp tại chân ADC
     float adc_voltage = adc_avg * ADC_VREF / ADC_RESOLUTION;
-    
-    // Hiệu chỉnh cho mạch chia áp để có điện áp thực của cảm biến
-    
+
     return adc_voltage;
 }
 /**
