@@ -115,7 +115,7 @@ void TestSensorSystem(void) {
         printf("  MQ137: %.1f ppm NH3 (Alarm: %d)\r\n", 
                GetNH3_PPM(), GetNH3AlarmLevel());
         printf("  MQ136: %.1f ppm H2S (Alarm: %d)\r\n", 
-               GetCO2_PPM(), GetCO2AlarmLevel());
+               GetH2S_PPM(), GetH2SAlarmLevel());
         printf("  HE THONG: Status=%d, Alarm=%d\r\n\r\n", 
                GetSystemStatus(), GetSystemAlarmLevel());
         

@@ -23,5 +23,6 @@
 "./Drivers/hardware/src/i2c.o"
 "./Drivers/hardware/src/uart.o"
 "./appication/src/gas_sensor.o"
+"./appication/src/send_data_esp32.o"
 "./appication/src/sensor_hardware.o"
 "./appication/src/sensor_system.o"

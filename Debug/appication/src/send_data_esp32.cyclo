@@ -1,0 +1,9 @@
+../appication/src/send_data_esp32.c:56:6:CreateJSONString	1
+../appication/src/send_data_esp32.c:132:9:SendJSONData	1
+../appication/src/send_data_esp32.c:146:6:SendCommandToESP32	1
+../appication/src/send_data_esp32.c:158:10:ReadESP32Response	2
+../appication/src/send_data_esp32.c:180:6:ProcessESP32Response	7
+../appication/src/send_data_esp32.c:209:6:SendDataToESP32	2
+../appication/src/send_data_esp32.c:227:6:SendAlarmUpdate	10
+../appication/src/send_data_esp32.c:289:6:UpdateMainLoopWithESP32	4
+../appication/src/send_data_esp32.c:332:6:HandleDeviceControl	11

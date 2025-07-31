@@ -6,16 +6,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../appication/src/gas_sensor.c \
+../appication/src/send_data_esp32.c \
 ../appication/src/sensor_hardware.c \
 ../appication/src/sensor_system.c 
 
 OBJS += \
 ./appication/src/gas_sensor.o \
+./appication/src/send_data_esp32.o \
 ./appication/src/sensor_hardware.o \
 ./appication/src/sensor_system.o 
 
 C_DEPS += \
 ./appication/src/gas_sensor.d \
+./appication/src/send_data_esp32.d \
 ./appication/src/sensor_hardware.d \
 ./appication/src/sensor_system.d 
 
@@ -27,7 +30,7 @@ appication/src/%.o appication/src/%.su appication/src/%.cyclo: ../appication/src
 clean: clean-appication-2f-src
 
 clean-appication-2f-src:
-	-$(RM) ./appication/src/gas_sensor.cyclo ./appication/src/gas_sensor.d ./appication/src/gas_sensor.o ./appication/src/gas_sensor.su ./appication/src/sensor_hardware.cyclo ./appication/src/sensor_hardware.d ./appication/src/sensor_hardware.o ./appication/src/sensor_hardware.su ./appication/src/sensor_system.cyclo ./appication/src/sensor_system.d ./appication/src/sensor_system.o ./appication/src/sensor_system.su
+	-$(RM) ./appication/src/gas_sensor.cyclo ./appication/src/gas_sensor.d ./appication/src/gas_sensor.o ./appication/src/gas_sensor.su ./appication/src/send_data_esp32.cyclo ./appication/src/send_data_esp32.d ./appication/src/send_data_esp32.o ./appication/src/send_data_esp32.su ./appication/src/sensor_hardware.cyclo ./appication/src/sensor_hardware.d ./appication/src/sensor_hardware.o ./appication/src/sensor_hardware.su ./appication/src/sensor_system.cyclo ./appication/src/sensor_system.d ./appication/src/sensor_system.o ./appication/src/sensor_system.su
 
 .PHONY: clean-appication-2f-src
 

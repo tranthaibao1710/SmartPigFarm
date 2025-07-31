@@ -5,6 +5,7 @@
 #include "stm32f103xb.h"
 #include <stdint.h>
 #include <stdio.h>
+
 typedef enum{
 PA9PA10, //usart1
 PB6PB7, // uart1
