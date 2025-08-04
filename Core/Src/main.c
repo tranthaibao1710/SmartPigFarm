@@ -103,16 +103,21 @@ int main(void)
     // =============================================================================
     uint8_t current_gio, current_phut, current_giay, current_thu, current_ngay, current_thang, current_nam;
     DS3231Read(&current_gio, &current_phut, &current_giay, &current_thu, &current_ngay, &current_thang, &current_nam);
-    
+    uint32_t current_time = HAL_GetTick();
     // =============================================================================
     // XỬ LÝ CẢM BIẾN VỚI TIMESTAMP
     // =============================================================================
     printf("\r\n[%02d:%02d:%02d] XU LY CAM BIEN \r\n", 
            current_gio, current_phut, current_giay);
     
-    // Xử lý tất cả cảm biến
+    // 1. Xử lý cảm biến (luôn chạy)
     ProcessAllSensors();
+    
+    // 2. Đọc response từ ESP32
 
+    
+    // 3. Gửi alarm ngay khi thay đổi
+   
     // Hiển thị trạng thái chi tiết (mỗi 5 lần)
     if(++display_counter >= 5) {
         display_counter = 0;
@@ -120,7 +125,11 @@ int main(void)
                current_gio, current_phut, current_giay, current_ngay, current_thang, current_nam);
         DisplaySystemStatus();
     }
-
+    
+    // 5. Gửi dữ liệu đến ESP32 mỗi 10 giây
+        
+        SendDataToESP32();
+    HAL_Delay(2000);
     // Lấy giá trị để điều khiển
     float nh3_ppm = GetNH3_PPM();
     float h2s_ppm = GetH2S_PPM();
