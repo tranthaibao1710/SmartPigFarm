@@ -2,4 +2,4 @@
 ../appication/src/sensor_hardware.c:20:9:ReadDigitalState	1
 ../appication/src/sensor_hardware.c:27:7:CalculateResistance	2
 ../appication/src/sensor_hardware.c:39:7:CalculateGasPPM	2
-../appication/src/sensor_hardware.c:51:14:DetermineAlarmLevel	4
+../appication/src/sensor_hardware.c:50:14:DetermineAlarmLevel	4

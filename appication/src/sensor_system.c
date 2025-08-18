@@ -51,7 +51,7 @@ void InitSensorSystem(void) {
 }
 void ProcessAllSensors(void) {
     uint32_t current_time = HAL_GetTick();
-    printf  ("\r\nXU LY CAM BIEN TAI %lu ms \r\n", current_time);
+
     // Xử lý từng cảm biến
     if(g_sensor_system.mq137.base.is_enabled) {
         ProcessGasSensor(&g_sensor_system.mq137);

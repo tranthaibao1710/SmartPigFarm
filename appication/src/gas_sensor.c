@@ -114,12 +114,7 @@ uint8_t ValidateGasSensor(GasSensor_t* sensor) {
     if(sensor->base.raw_voltage < 0.2f || sensor->base.raw_voltage > 4.8f) {
         return 0;
     }
-    
-    // Kiểm tra điện trở trong khoảng hợp lệ
-    if(sensor->base.resistance < 1000.0f || sensor->base.resistance > 200000.0f) {
-        return 0;
-    }
-    
+     
     // Kiểm tra nồng độ khí trong khoảng hợp lệ
     if(sensor->gas_ppm < sensor->min_ppm || sensor->gas_ppm > sensor->max_ppm) {
         return 0;

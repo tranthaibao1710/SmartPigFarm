@@ -18,16 +18,23 @@ static uint8_t packet_counter = 0;
 /**
  * @brief Tạo chuỗi JSON từ dữ liệu cảm biến
  */
+  uint8_t gio, phut, giay,thu, ngay, thang, nam;
+  
 void CreateJSONString(void) {
+ 
+  DS3231Read(&gio, &phut, &giay, &thu, &ngay, &thang, &nam);
+    char time_str[16];
+    snprintf(time_str, sizeof(time_str), "%02u:%02u:%02u",
+             gio, phut, giay);
     snprintf(json_buffer, JSON_BUFFER_SIZE,
         "{"
             "\"id\":%d,"
-            "\"time\":%lu,"
-            "\"nh3\":%.1f,"
-            "\"h2s\":%.1f"
+            "\"time\":\"%s\","
+            "\"nh3\":%.2f,"
+            "\"h2s\":%.2f"
         "}",
         packet_counter,
-        HAL_GetTick() / 1000,
+        time_str,
         GetNH3_PPM(),
         GetH2S_PPM()
     );

@@ -1,8 +1,8 @@
 ../Drivers/hardware/src/i2c.c:3:6:I2Cx_Init	40	static
-../Drivers/hardware/src/i2c.c:37:7:I2Cx_ReadMulti	32	static
-../Drivers/hardware/src/i2c.c:62:7:I2Cx_WriteMulti	32	static
-../Drivers/hardware/src/i2c.c:81:9:BCDtoBIN	16	static
-../Drivers/hardware/src/i2c.c:86:9:BINtoBCD	16	static
+../Drivers/hardware/src/i2c.c:36:7:I2Cx_ReadMulti	32	static
+../Drivers/hardware/src/i2c.c:61:7:I2Cx_WriteMulti	32	static
+../Drivers/hardware/src/i2c.c:80:9:BCDtoBIN	16	static
+../Drivers/hardware/src/i2c.c:85:9:BINtoBCD	16	static
 ../Drivers/hardware/src/i2c.c:91:9:RTC_CheckMinMax	16	static
 ../Drivers/hardware/src/i2c.c:100:6:DS3231Read	40	static
-../Drivers/hardware/src/i2c.c:108:6:DS3231Set	40	static
+../Drivers/hardware/src/i2c.c:109:6:DS3231Set	40	static

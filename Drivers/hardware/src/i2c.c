@@ -10,7 +10,6 @@ void I2Cx_Init(I2C_TypeDef * I2Cx, I2C_Pin Pins, uint32_t Speed)
 		} else if (I2Cx == I2C2) {
 				RCC->APB1ENR |= (1 << 22); // B?t clock cho I2C2
 		}
-	
 
 		if(Pins==Pin_PB6PB7){		////I2C1
 			GPIOx_Init(GPIOB, 6,OUTPUT_AF_OD,NOPULL,MODE_OUTPUT_50MHZ);
@@ -78,12 +77,13 @@ void I2Cx_Init(I2C_TypeDef * I2Cx, I2C_Pin Pins, uint32_t Speed)
 	I2Cx->CR1 &= ~(1<<10);// nACK
 	I2Cx->CR1 |= (1<<9) ;// Stop 
 }
-uint8_t BCDtoBIN(uint8_t bcd){
+uint8_t BCDtoBIN(uint8_t bcd)
+{
 return 10*(bcd>>4) + (bcd&0x0f);
-
 }
 
-uint8_t BINtoBCD(uint8_t bin){
+uint8_t BINtoBCD(uint8_t bin)
+{
 return ((bin/10)<<4) + (bin%10);
 }
 
@@ -97,15 +97,17 @@ uint8_t RTC_CheckMinMax(uint8_t val, uint8_t min, uint8_t max) {
 	return val;
 }
 
-void DS3231Read(uint8_t *HH, uint8_t *MM, uint8_t *SS,uint8_t *Date ,uint8_t *D,uint8_t *M,uint8_t *Y){
+void DS3231Read(uint8_t *HH, uint8_t *MM, uint8_t *SS,uint8_t *Date ,uint8_t *D,uint8_t *M,uint8_t *Y)
+{
 uint8_t data[7];
 	
 I2Cx_ReadMulti(I2C1, 0x68, 0x00, data, 7);
 	
-	*HH=BCDtoBIN(data[2]); *MM=BCDtoBIN(data[1]); *SS=BCDtoBIN(data[0]); *Date =BCDtoBIN(data[3]);*D=BCDtoBIN(data[4]);*M=BCDtoBIN(data[5]);*Y=BCDtoBIN(data[6]);
-	
+*HH=BCDtoBIN(data[2]); *MM=BCDtoBIN(data[1]); *SS=BCDtoBIN(data[0]);
+*Date =BCDtoBIN(data[3]);*D=BCDtoBIN(data[4]);*M=BCDtoBIN(data[5]);*Y=BCDtoBIN(data[6]);	
 }
-void DS3231Set(uint8_t HH, uint8_t MM, uint8_t SS,uint8_t Date ,uint8_t D,uint8_t M,uint8_t Y){
+void DS3231Set(uint8_t HH, uint8_t MM, uint8_t SS,uint8_t Date ,uint8_t D,uint8_t M,uint8_t Y)
+{
 
 	uint8_t data[7];
 	

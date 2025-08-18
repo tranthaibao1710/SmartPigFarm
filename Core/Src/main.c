@@ -47,29 +47,26 @@ int main(void)
   USARTx_Init(USART1, PA9PA10, 115200);
 
   // Display welcome message
-  printf("HE THONG GIAM SAT KHI NH3 & H2S\n");
-  printf("CAM BIEN: MQ137 + MQ136 + RTC DS3231\r\n");
- 
   // =============================================================================
   // KHỞI TẠO RTC DS3231 - ĐơN GIẢN
   // =============================================================================
-  printf("\r\nKHOI TAO RTC DS3231 \r\n");
+
   
   // Khởi tạo I2C cho DS3231
   I2Cx_Init(I2C1, Pin_PB6PB7, 100000);
-  printf(" I2C1 da khoi tao cho DS3231\r\n");
+
   
   // Thiết lập thời gian ban đầu (chỉ chạy 1 lần khi cần)
   // Uncomment dòng dưới để set thời gian:
-  // DS3231Set(0, 18, 0, 7, 12, 7, 25);  // 17:15:00, Thứ 6, 11/07/2025
+    //DS3231Set(17, 36,30,  2, 11, 8, 25);  // 17:15:00, Thứ 6, 11/07/2025
   
   // Test đọc thời gian với biến local
-  uint8_t test_gio, test_phut, test_giay, test_thu, test_ngay, test_thang, test_nam;
-  DS3231Read(&test_gio, &test_phut, &test_giay, &test_thu, &test_ngay, &test_thang, &test_nam);
-  printf("Thoi gian hien tai: %02d:%02d:%02d %02d/%02d/20%02d\r\n",
-         test_gio, test_phut, test_giay, test_ngay, test_thang, test_nam);
+//  uint8_t test_gio, test_phut, test_giay, test_thu, test_ngay, test_thang, test_nam;
+//  DS3231Read(&test_gio, &test_phut, &test_giay, &test_thu, &test_ngay, &test_thang, &test_nam);
+//  printf("Thoi gian hien tai: %02d:%02d:%02d %02d/%02d/20%02d\r\n",
+//         test_gio, test_phut, test_giay, test_ngay, test_thang, test_nam);
   
-  printf(" RTC da san sang\r\n");
+//  printf(" RTC da san sang\r\n");
   
   // =============================================================================
   // KHỞI TẠO HỆ THỐNG CẢM BIẾN (GỮ NGUYÊN)
@@ -83,9 +80,7 @@ int main(void)
 
   // Hiệu chuẩn nếu cần (uncomment để chạy)
   //CalibrateSensors();
-  SetManualR0(26000, 37000); // Set R0 cho MQ137 & MQ136
-  printf("\r\n BAT DAU GIAM SAT\r\n");
-  printf("Press any key to stop...\r\n");
+  SetManualR0(40000, 190000); // Set R0 cho MQ137 & MQ136
 
   // =============================================================================
   // BIẾN ĐỂ QUẢN LÝ LOG THEO THỜI GIAN
@@ -93,7 +88,7 @@ int main(void)
   uint32_t last_log_minute = 255; // Giá trị ban đầu không hợp lệ để force log lần đầu
   uint8_t display_counter = 0;
   GPIOx_Init(GPIOB,3 , OUTPUT_PP ,NOPULL, MODE_OUTPUT_50MHZ);
- 
+  GPIOx_Init(GPIOB,4 , OUTPUT_PP ,NOPULL, MODE_OUTPUT_50MHZ);
   // Bật LED báo hiệu hệ thống đã sẵn sàng
   // Main loop
   while (1)
@@ -119,17 +114,17 @@ int main(void)
     // 3. Gửi alarm ngay khi thay đổi
    
     // Hiển thị trạng thái chi tiết (mỗi 5 lần)
-    if(++display_counter >= 5) {
+    /*if(++display_counter >= 5) {
         display_counter = 0;
         printf("\r\n=== [%02d:%02d:%02d %02d/%02d/20%02d] TRANG THAI HE THONG ===\r\n",
                current_gio, current_phut, current_giay, current_ngay, current_thang, current_nam);
         DisplaySystemStatus();
-    }
+    }*/
     
     // 5. Gửi dữ liệu đến ESP32 mỗi 10 giây
         
         SendDataToESP32();
-    HAL_Delay(2000);
+        HAL_Delay(2000);
     // Lấy giá trị để điều khiển
     float nh3_ppm = GetNH3_PPM();
     float h2s_ppm = GetH2S_PPM();
@@ -141,7 +136,7 @@ int main(void)
     // LOG DỮ LIỆU THEO THỜI GIAN (MỖI 5 PHÚT)
     // =============================================================================
     // Kiểm tra nếu phút chia hết cho 5 và khác với lần log trước
-    if((current_phut % 5 == 0) && (current_phut != last_log_minute)) {
+    /*if((current_phut % 5 == 0) && (current_phut != last_log_minute)) {
         last_log_minute = current_phut;
         
         printf("\r\n=== [%02d:%02d:%02d] LOG DU LIEU CAM BIEN ===\r\n",
@@ -152,19 +147,19 @@ int main(void)
         printf("Uptime: %.1f phut\r\n", HAL_GetTick() / 60000.0f);
         printf("==============================================\r\n");
     }
-
+*/
     // =============================================================================
     // LOGIC ĐIỀU KHIỂN (GỮ NGUYÊN)
     // =============================================================================
     
     // Debug thong tin
-    printf("DEBUG - NH3: %.1f ppm, Alarm Level: %d\r\n", nh3_ppm, nh3_alarm);
-    printf("DEBUG - H2S: %.1f ppm, Alarm Level: %d\r\n", h2s_ppm, h2s_alarm);
+    //printf("DEBUG - NH3: %.1f ppm, Alarm Level: %d\r\n", nh3_ppm, nh3_alarm);
+    //printf("DEBUG - H2S: %.1f ppm, Alarm Level: %d\r\n", h2s_ppm, h2s_alarm);
     
     // Logic dieu khien NH3 - day du tat ca truong hop
-    printf("\r\nNH3 STATUS: ");
+   // printf("\r\nNH3 STATUS: ");
     if(nh3_alarm == ALARM_DANGER) {
-        printf("NH3 = %.1f ppm - NGUY HIEM! BAT QUAT MAX!\r\n", nh3_ppm);
+     //   printf("NH3 = %.1f ppm - NGUY HIEM! BAT QUAT MAX!\r\n", nh3_ppm);
         // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
     }
     else if(nh3_alarm == ALARM_HIGH) {
@@ -172,11 +167,13 @@ int main(void)
         GPIOx_WritePin(GPIOB ,3 ,1); //  HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_SET);
     }
     else if(nh3_alarm == ALARM_LOW) {
-        printf("NH3 = %.1f ppm - Canh bao thap\r\n", nh3_ppm);
-        // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_RESET);
+       // printf("NH3 = %.1f ppm - Canh bao thap\r\n", nh3_ppm);
+        GPIOx_WritePin(GPIOB ,4 ,1);
     }
     else { // ALARM_NORMAL
         printf("NH3 = %.1f ppm - Binh thuong\r\n", nh3_ppm);
+        GPIOx_WritePin(GPIOB ,3 ,0); //  GPIOx_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_RESET);
+        GPIOx_WritePin(GPIOB ,4 ,0); //  GPIOx_WritePin(F
         // HAL_GPIO_WritePin(FAN_NH3_PORT, FAN_NH3_PIN, GPIO_PIN_RESET);
     }
     
@@ -261,7 +258,7 @@ int main(void)
     printf("\r\n[%02d:%02d:%02d] CHO %d GIAY DE DO TIEP\r\n", 
            current_gio, current_phut, current_giay, MAIN_LOOP_DELAY/1000);
     
-    HAL_Delay(MAIN_LOOP_DELAY); // Chờ 1 phút
+    HAL_Delay(3000); 
   }
 }
 

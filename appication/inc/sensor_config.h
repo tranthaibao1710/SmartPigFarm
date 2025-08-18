@@ -46,7 +46,7 @@
 
 #define ADC_VREF            3.3f    // Điện áp tham chiếu ADC (V)
 #define ADC_RESOLUTION      4095    // 12-bit ADC
-#define SENSOR_VCC          3.3f    // Điện áp cấp cho cảm biến (V)
+#define SENSOR_VCC          5.0f    // Điện áp cấp cho cảm biến (V)
 #define VOLTAGE_DIVIDER_RATIO 0.66f // Tỷ lệ chia áp (3.3V/5V)
 #define LOAD_RESISTANCE     10000.0f // Điện trở tải (Ω)
 
@@ -55,7 +55,7 @@
 // =============================================================================
 
 // Ngưỡng cảnh báo NH3 (ppm)
-#define MQ137_THRESHOLD_LOW     15.0f
+#define MQ137_THRESHOLD_LOW     10.0f
 #define MQ137_THRESHOLD_HIGH    25.0f
 #define MQ137_THRESHOLD_DANGER  50.0f
 
@@ -80,7 +80,7 @@
 // Đặc tuyến MQ136 cho khí H₂S (log-log)
 #define MQ136_CURVE_A           -0.25f
 #define MQ136_CURVE_B           -0.24f
-#define MQ136_MIN_PPM           1.0f
+#define MQ136_MIN_PPM           0.0f
 #define MQ136_MAX_PPM           100.0f
 
 // Giá trị R0 mặc định (hiệu chuẩn)

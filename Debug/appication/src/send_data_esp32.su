@@ -1,2 +1,2 @@
-../appication/src/send_data_esp32.c:21:6:CreateJSONString	48	static
-../appication/src/send_data_esp32.c:39:6:SendDataToESP32	8	static
+../appication/src/send_data_esp32.c:23:6:CreateJSONString	64	static
+../appication/src/send_data_esp32.c:46:6:SendDataToESP32	8	static
