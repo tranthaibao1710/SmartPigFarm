@@ -110,7 +110,7 @@ int main(void)
     
     // 2. Đọc response từ ESP32
 
-    
+     
     // 3. Gửi alarm ngay khi thay đổi
    
     // Hiển thị trạng thái chi tiết (mỗi 5 lần)
